@@ -1,0 +1,2549 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#090C15">
+<meta name="apple-mobile-web-app-title" content="LINGUA·PRO">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
+<link rel="apple-touch-icon" sizes="512x512" href="./icon-512.png">
+<title>LINGUA·UK·DE — English A2→C1 & Deutsch A1→B2</title>
+<style>
+  :root {
+    --bg: #090C15;
+    --bg-elev: #111625;
+    --bg-card: #151B2E;
+    --bg-input: #0D1220;
+    --bg-chip: #1C2338;
+    --border: rgba(255, 255, 255, 0.08);
+    --border-strong: rgba(255, 255, 255, 0.14);
+    --text: #F3F4F6;
+    --text-muted: #94A3B8;
+    --text-dim: #64748B;
+    --accent: #635BFF;
+    --accent-hover: #766FFF;
+    --accent-soft: rgba(99, 91, 255, 0.16);
+    --amber: #F59E0B;
+    --violet: #A855F7;
+    --rose: #F43F5E;
+    --indigo: #6366F1;
+    --cyan: #06B6D4;
+    --emerald: #10B981;
+    --danger: #EF4444;
+    --radius-lg: 18px;
+    --radius-md: 13px;
+    --radius-sm: 10px;
+    --shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  }
+  [data-theme="light"] {
+    --bg: #F3F5FA;
+    --bg-elev: #FFFFFF;
+    --bg-card: #FFFFFF;
+    --bg-input: #F1F5F9;
+    --bg-chip: #E8EDF5;
+    --border: rgba(15, 23, 42, 0.09);
+    --border-strong: rgba(15, 23, 42, 0.16);
+    --text: #0F172A;
+    --text-muted: #475569;
+    --text-dim: #64748B;
+    --accent: #5B4CF6;
+    --accent-hover: #4A3BE5;
+    --accent-soft: rgba(91, 76, 246, 0.12);
+    --shadow: 0 4px 16px rgba(15, 23, 42, 0.07);
+  }
+
+  * {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+    transition: background 0.25s ease, color 0.25s ease;
+  }
+
+  .app-shell {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 12px 14px 48px;
+  }
+
+  /* Header */
+  .app-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 6px 2px 12px;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    min-width: 0;
+  }
+  .brand-logo {
+    width: 42px;
+    height: 42px;
+    border-radius: 13px;
+    background: linear-gradient(135deg, #7C5CFF 0%, #38BDF8 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 14px;
+    letter-spacing: -0.5px;
+    color: #fff;
+    box-shadow: 0 4px 14px rgba(99, 91, 255, 0.35);
+    flex-shrink: 0;
+  }
+  .brand-text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  .brand-title {
+    font-size: 17px;
+    font-weight: 800;
+    letter-spacing: 0.6px;
+    line-height: 1.15;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .brand-sub {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    margin-top: 2px;
+  }
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  .stat-pill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    padding: 6px 11px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .stat-xp { color: #60A5FA; }
+  .stat-streak { color: #FB923C; }
+  .icon-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--bg-elev);
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.15s, border-color 0.2s, background 0.2s;
+  }
+  .icon-btn:hover { border-color: var(--border-strong); }
+  .icon-btn:active { transform: scale(0.94); }
+
+  /* Top 5-Tab Bar matching screenshot */
+  .nav-bar {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+    padding: 6px 0 14px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 16px;
+  }
+  .nav-tab {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 9px 4px;
+    border-radius: 14px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 11.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 0;
+  }
+  .nav-tab svg { width: 19px; height: 19px; flex-shrink: 0; }
+  .nav-tab span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+  .nav-tab:hover { color: var(--text); background: var(--bg-elev); }
+  .nav-tab.active {
+    background: var(--accent);
+    color: #fff;
+    box-shadow: 0 4px 14px rgba(99, 91, 255, 0.35);
+  }
+
+  /* 2-Column Progress Grid matching screenshot */
+  .progress-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  @media (min-width: 640px) {
+    .progress-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  .prog-card {
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 13px 13px 12px;
+    cursor: pointer;
+    transition: transform 0.15s ease, border-color 0.2s ease;
+    text-align: left;
+    width: 100%;
+    color: inherit;
+  }
+  .prog-card:hover { border-color: var(--border-strong); transform: translateY(-1px); }
+  .prog-card.selected { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+  .prog-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .prog-title-wrap {
+    display: flex;
+    align-items: flex-start;
+    gap: 7px;
+    min-width: 0;
+  }
+  .prog-dot {
+    width: 5px;
+    height: 15px;
+    border-radius: 99px;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+  .prog-title {
+    font-size: 11.5px;
+    font-weight: 800;
+    letter-spacing: 0.35px;
+    line-height: 1.25;
+    text-transform: uppercase;
+  }
+  .prog-stat {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-align: right;
+    white-space: nowrap;
+    line-height: 1.25;
+  }
+  .prog-bar-bg {
+    height: 5px;
+    border-radius: 99px;
+    background: var(--bg-chip);
+    overflow: hidden;
+  }
+  .prog-bar-fill {
+    height: 100%;
+    border-radius: 99px;
+    transition: width 0.35s ease;
+  }
+
+  /* Filter & Search Container matching screenshot */
+  .panel-card {
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 14px;
+    margin-bottom: 14px;
+    box-shadow: var(--shadow);
+  }
+  .chip-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-bottom: 11px;
+  }
+  .pill-btn {
+    padding: 7px 13px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--bg-chip);
+    color: var(--text-muted);
+    font-size: 12.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .pill-btn:hover { color: var(--text); border-color: var(--border-strong); }
+  .pill-btn.active {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+    box-shadow: 0 3px 10px rgba(99, 91, 255, 0.3);
+  }
+  .search-wrap {
+    position: relative;
+    margin-bottom: 10px;
+  }
+  .search-wrap svg {
+    position: absolute;
+    left: 13px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    color: var(--text-dim);
+    pointer-events: none;
+  }
+  .input-field, .select-field, textarea.input-field {
+    width: 100%;
+    padding: 11px 13px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+    background: var(--bg-input);
+    color: var(--text);
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .search-wrap .input-field { padding-left: 38px; }
+  .input-field:focus, .select-field:focus { border-color: var(--accent); }
+  .quick-filters {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .toggle-chip {
+    padding: 7px 12px;
+    border-radius: 11px;
+    border: 1px solid var(--border);
+    background: var(--bg-input);
+    color: var(--text-muted);
+    font-size: 12.5px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.18s;
+  }
+  .toggle-chip.active {
+    background: var(--accent-soft);
+    border-color: var(--accent);
+    color: var(--text);
+  }
+
+  /* Topic Cheat-sheet Cards */
+  .topic-card {
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 15px;
+    margin-bottom: 11px;
+    transition: border-color 0.2s;
+  }
+  .topic-card.learned { border-color: rgba(16, 185, 129, 0.35); }
+  .topic-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+    cursor: pointer;
+  }
+  .topic-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 6px;
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 8px;
+    border-radius: 7px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+  }
+  .badge-en { background: rgba(99, 102, 241, 0.18); color: #818CF8; }
+  .badge-de { background: rgba(6, 182, 212, 0.18); color: #22D3EE; }
+  .badge-c1 { background: rgba(244, 63, 94, 0.18); color: #FB7185; }
+  .badge-ok { background: rgba(16, 185, 129, 0.18); color: #34D399; }
+  [data-theme="light"] .badge-en { color: #4338CA; }
+  [data-theme="light"] .badge-de { color: #0E7490; }
+  [data-theme="light"] .badge-c1 { color: #BE123C; }
+  [data-theme="light"] .badge-ok { color: #047857; }
+
+  .topic-title { font-size: 15.5px; font-weight: 700; line-height: 1.3; }
+  .topic-sub { font-size: 12.5px; color: var(--text-muted); margin-top: 3px; }
+  .topic-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+  .mini-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 9px;
+    border: 1px solid var(--border);
+    background: var(--bg-input);
+    color: var(--text-muted);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.15s;
+  }
+  .mini-btn:hover { border-color: var(--border-strong); color: var(--text); }
+  .mini-btn.fav-on { color: #F59E0B; border-color: rgba(245, 158, 11, 0.45); background: rgba(245, 158, 11, 0.12); }
+  .mini-btn.done-on { color: #10B981; border-color: rgba(16, 185, 129, 0.45); background: rgba(16, 185, 129, 0.12); }
+
+  .topic-body {
+    margin-top: 13px;
+    padding-top: 13px;
+    border-top: 1px solid var(--border);
+    font-size: 13.5px;
+    line-height: 1.55;
+  }
+  .formula-box {
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin: 8px 0;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 13px;
+    color: var(--text);
+    white-space: pre-line;
+  }
+  .example-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 9px 11px;
+    margin-top: 7px;
+  }
+  .example-en { font-weight: 600; font-size: 13.5px; }
+  .example-ipa { font-size: 11.5px; color: var(--cyan); font-family: ui-monospace, monospace; margin-top: 2px; }
+  .example-ru { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+  .speak-btn {
+    padding: 6px 10px;
+    border-radius: 9px;
+    border: 1px solid var(--border);
+    background: var(--bg-chip);
+    color: var(--text);
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    flex-shrink: 0;
+    transition: all 0.15s;
+  }
+  .speak-btn:hover { border-color: var(--accent); background: var(--accent-soft); }
+  .speak-btn:active { transform: scale(0.95); }
+
+  /* Verbs A-Z Table */
+  .alpha-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-bottom: 10px;
+  }
+  .alpha-chip {
+    min-width: 32px;
+    padding: 6px 8px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--bg-input);
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    text-align: center;
+  }
+  .alpha-chip.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .verb-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 10px 12px;
+    margin-bottom: 7px;
+  }
+  .verb-main { min-width: 0; }
+  .verb-forms { font-weight: 800; font-size: 14.5px; color: var(--text); }
+  .verb-meta { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+  /* Flashcards 3D */
+  .flashcard-scene {
+    perspective: 1000px;
+    margin: 12px 0 14px;
+  }
+  .flashcard {
+    position: relative;
+    width: 100%;
+    min-height: 250px;
+    cursor: pointer;
+    transform-style: preserve-3d;
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .flashcard.flipped { transform: rotateY(180deg); }
+  .fc-face {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    background: var(--bg-elev);
+    border: 1px solid var(--border-strong);
+    border-radius: 20px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: var(--shadow);
+  }
+  .fc-back {
+    transform: rotateY(180deg);
+    background: linear-gradient(160deg, var(--bg-elev) 0%, var(--bg-card) 100%);
+    border-color: var(--accent);
+  }
+  .fc-center {
+    text-align: center;
+    padding: 12px 0;
+  }
+  .fc-word { font-size: 24px; font-weight: 800; line-height: 1.25; }
+  .fc-ipa { font-size: 13.5px; color: var(--cyan); font-family: ui-monospace, monospace; margin-top: 6px; }
+  .fc-hint { font-size: 12px; color: var(--text-dim); text-align: center; }
+
+  /* Buttons */
+  .btn-primary {
+    width: 100%;
+    padding: 13px 16px;
+    border-radius: 13px;
+    border: none;
+    background: var(--accent);
+    color: #fff;
+    font-size: 14.5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.18s, transform 0.12s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .btn-primary:hover { background: var(--accent-hover); }
+  .btn-primary:active { transform: scale(0.98); }
+  .btn-secondary {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 13px;
+    border: 1px solid var(--border-strong);
+    background: var(--bg-chip);
+    color: var(--text);
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .btn-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+  /* Quiz Options */
+  .opt-btn {
+    width: 100%;
+    padding: 13px 15px;
+    border-radius: 13px;
+    border: 1px solid var(--border-strong);
+    background: var(--bg-elev);
+    color: var(--text);
+    font-size: 14.5px;
+    font-weight: 600;
+    text-align: left;
+    margin-bottom: 9px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .opt-btn:hover:not(:disabled) { border-color: var(--accent); background: var(--accent-soft); }
+  .opt-btn.correct { border-color: var(--emerald); background: rgba(16, 185, 129, 0.16); color: #34D399; }
+  .opt-btn.wrong { border-color: var(--danger); background: rgba(239, 68, 68, 0.16); color: #F87171; }
+  [data-theme="light"] .opt-btn.correct { color: #047857; }
+  [data-theme="light"] .opt-btn.wrong { color: #B91C1C; }
+
+  .feedback-box {
+    border-radius: 13px;
+    padding: 12px 14px;
+    margin: 10px 0;
+    font-size: 13.5px;
+    line-height: 1.45;
+    font-weight: 600;
+    white-space: pre-line;
+  }
+  .fb-ok { background: rgba(16, 185, 129, 0.14); border: 1px solid rgba(16, 185, 129, 0.35); color: #34D399; }
+  .fb-err { background: rgba(239, 68, 68, 0.14); border: 1px solid rgba(239, 68, 68, 0.35); color: #F87171; }
+  [data-theme="light"] .fb-ok { color: #047857; }
+  [data-theme="light"] .fb-err { color: #B91C1C; }
+
+  /* Sub-tabs in Tools */
+  .sub-tabs {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+    background: var(--bg-input);
+    padding: 5px;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    margin-bottom: 14px;
+  }
+  .sub-tab {
+    padding: 8px 4px;
+    border-radius: 10px;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    text-align: center;
+  }
+  .sub-tab.active { background: var(--accent); color: #fff; }
+
+  /* Calculators */
+  .slider-row {
+    margin-bottom: 12px;
+  }
+  .slider-head {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 5px;
+  }
+  input[type="range"] {
+    width: 100%;
+    accent-color: var(--accent);
+    cursor: pointer;
+  }
+  .result-banner {
+    background: linear-gradient(135deg, rgba(99, 91, 255, 0.22) 0%, rgba(6, 182, 212, 0.18) 100%);
+    border: 1px solid rgba(99, 91, 255, 0.4);
+    border-radius: 16px;
+    padding: 15px;
+    text-align: center;
+    margin-top: 12px;
+  }
+  .result-big { font-size: 32px; font-weight: 900; letter-spacing: -0.5px; }
+  .result-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-top: 12px;
+  }
+  .metric-box {
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    border-radius: 11px;
+    padding: 9px 6px;
+  }
+  .metric-val { font-size: 15px; font-weight: 800; }
+  .metric-lbl { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+  /* Toast & Modal */
+  .toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(90px);
+    background: var(--bg-card);
+    border: 1px solid var(--accent);
+    color: var(--text);
+    padding: 10px 18px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 700;
+    box-shadow: var(--shadow);
+    transition: transform 0.25s ease;
+    z-index: 1000;
+    pointer-events: none;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    z-index: 999;
+  }
+  .modal-backdrop.open { display: flex; }
+  .modal-box {
+    background: var(--bg-elev);
+    border: 1px solid var(--border-strong);
+    border-radius: 18px;
+    padding: 18px;
+    max-width: 400px;
+    width: 100%;
+    box-shadow: var(--shadow);
+  }
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<div class="app-shell">
+  <!-- HEADER -->
+  <header class="app-header">
+    <div class="brand">
+      <div class="brand-logo">UK·DE</div>
+      <div class="brand-text">
+        <div class="brand-title">LINGUA·PRO</div>
+        <div class="brand-sub">English A2→C1 · Deutsch A1→B2</div>
+      </div>
+    </div>
+    <div class="header-actions">
+      <div class="stat-pill" title="Опыт и серия">
+        <span class="stat-xp" id="hdr-xp">⭐ 0</span>
+        <span class="stat-streak" id="hdr-streak">🔥 0</span>
+      </div>
+      <button class="icon-btn" id="theme-toggle" title="Сменить тему" aria-label="Сменить тему">
+        <svg id="theme-icon" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="4"></circle>
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- 5-TAB NAVIGATION -->
+  <nav class="nav-bar" aria-label="Разделы">
+    <button class="nav-tab active" data-tab="0">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      <span>Шпаргалка</span>
+    </button>
+    <button class="nav-tab" data-tab="1">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+      <span>Карточки</span>
+    </button>
+    <button class="nav-tab" data-tab="2">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/></svg>
+      <span>Тренажёр</span>
+    </button>
+    <button class="nav-tab" data-tab="3">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+      <span>Письменно</span>
+    </button>
+    <button class="nav-tab" data-tab="4">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="10" y2="10"/><line x1="14" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="10" y2="14"/><line x1="14" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="16" y2="18"/></svg>
+      <span>Инстр.</span>
+    </button>
+  </nav>
+
+  <!-- ==================== TAB 0: ШПАРГАЛКА ==================== -->
+  <section id="view-0">
+    <div class="progress-grid" id="progress-grid"></div>
+
+    <div class="panel-card">
+      <div class="chip-row" id="cat-chips"></div>
+      <div class="search-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input type="text" id="cheat-search" class="input-field" placeholder="Поиск: Present Perfect, Inversion, der/die/das, глаголы...">
+      </div>
+      <div class="quick-filters">
+        <button class="toggle-chip" id="filter-fav">🔖 Избранное</button>
+        <button class="toggle-chip" id="filter-unlearned">◌ Неизученные</button>
+        <button class="toggle-chip" id="open-phonetics-quick">🎙️ Акценты UK & DE</button>
+      </div>
+    </div>
+
+    <div id="cheat-list"></div>
+
+    <!-- Таблица глаголов A-Z (показывается при выборе Глаголы A-Z или DE Глаголы) -->
+    <div id="verbs-panel" class="panel-card hidden">
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:10px; flex-wrap:wrap;">
+        <div style="font-weight:800; font-size:15px;" id="verbs-panel-title">📋 115 неправильных глаголов (A–Z)</div>
+        <div style="display:flex; gap:6px;">
+          <button class="pill-btn active" id="vlang-en">🇬🇧 EN (115)</button>
+          <button class="pill-btn" id="vlang-de">🇩🇪 DE (20)</button>
+        </div>
+      </div>
+      <div class="alpha-grid" id="alpha-bar"></div>
+      <div id="verbs-count-bar" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; gap:8px; flex-wrap:wrap;">
+        <span style="font-size:12.5px; color:var(--text-muted); font-weight:600;" id="verbs-count-lbl"></span>
+        <button class="pill-btn active" id="train-these-verbs">✍️ Тренировать письменно</button>
+      </div>
+      <div id="verbs-list"></div>
+    </div>
+  </section>
+
+  <!-- ==================== TAB 1: КАРТОЧКИ ==================== -->
+  <section id="view-1" class="hidden">
+    <div class="panel-card">
+      <div class="chip-row" id="fc-deck-chips" style="margin-bottom:0;"></div>
+    </div>
+    <div style="display:flex; justify-content:space-between; align-items:center; padding:0 4px; font-size:12.5px; color:var(--text-muted); font-weight:700;">
+      <span id="fc-counter">Карточка 1 / 1</span>
+      <span id="fc-status-lbl">Нажми на карточку, чтобы перевернуть</span>
+    </div>
+    <div class="flashcard-scene">
+      <div class="flashcard" id="flashcard">
+        <div class="fc-face fc-front">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span class="badge badge-en" id="fc-badge">EN B2</span>
+            <div style="display:flex; gap:6px;">
+              <button class="speak-btn" id="fc-speak-norm">🔊 Слушать (1.0x)</button>
+            </div>
+          </div>
+          <div class="fc-center">
+            <div class="fc-word" id="fc-front-text"></div>
+            <div class="fc-ipa" id="fc-front-ipa"></div>
+          </div>
+          <div class="fc-hint">👆 Тапни, чтобы увидеть перевод и разбор</div>
+        </div>
+        <div class="fc-face fc-back">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span class="badge badge-ok" id="fc-back-badge">Ответ</span>
+            <button class="speak-btn" id="fc-speak-ex">🔊 Пример</button>
+          </div>
+          <div class="fc-center">
+            <div class="fc-word" style="font-size:20px;" id="fc-back-text"></div>
+            <div style="font-size:13px; color:var(--text-muted); margin-top:8px; line-height:1.45;" id="fc-back-ex"></div>
+          </div>
+          <div class="fc-hint">Оцени, насколько уверенно знаешь</div>
+        </div>
+      </div>
+    </div>
+    <div class="btn-grid-2">
+      <button class="btn-secondary" id="fc-again">🔄 Повторить позже</button>
+      <button class="btn-primary" id="fc-know">✅ Знаю (+5 XP)</button>
+    </div>
+  </section>
+
+  <!-- ==================== TAB 2: ТРЕНАЖЁР ==================== -->
+  <section id="view-2" class="hidden">
+    <div class="panel-card">
+      <label for="prac-select" style="display:block; font-size:12px; font-weight:700; color:var(--text-muted); margin-bottom:6px;">ВЫБЕРИ МОДУЛЬ ТРЕНИРОВКИ</label>
+      <select id="prac-select" class="select-field"></select>
+    </div>
+    <div class="panel-card">
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:10px;">
+        <span class="badge badge-en" id="prac-tag">Модуль</span>
+        <button class="speak-btn" id="prac-speak">🔊 Озвучить</button>
+      </div>
+      <div id="prac-q" style="font-size:16.5px; font-weight:700; line-height:1.45; margin-bottom:14px;"></div>
+      <div id="prac-opts"></div>
+      <div id="prac-fb" class="feedback-box hidden"></div>
+      <button id="prac-next" class="btn-primary hidden" style="margin-top:8px;">Следующий вопрос ➔</button>
+    </div>
+  </section>
+
+  <!-- ==================== TAB 3: ПИСЬМЕННО ==================== -->
+  <section id="view-3" class="hidden">
+    <div class="panel-card">
+      <label for="write-select" style="display:block; font-size:12px; font-weight:700; color:var(--text-muted); margin-bottom:6px;">РЕЖИМ ПИСЬМЕННОГО ТРЕНАЖЁРА</label>
+      <select id="write-select" class="select-field"></select>
+      <div id="write-letters" class="alpha-grid" style="margin-top:10px; margin-bottom:0;"></div>
+    </div>
+
+    <div class="panel-card">
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:8px;">
+        <span class="badge badge-en" id="write-badge"></span>
+        <button class="speak-btn" id="write-speak">🔊 Подсказка голосом</button>
+      </div>
+      <div id="write-prompt" style="font-size:17px; font-weight:800; line-height:1.4; margin-bottom:14px;"></div>
+
+      <div id="write-inputs-pair">
+        <input type="text" id="inp-f2" class="input-field" style="margin-bottom:8px;" placeholder="2-я форма (V2 / Präteritum)" autocomplete="off">
+        <input type="text" id="inp-f3" class="input-field" style="margin-bottom:10px;" placeholder="3-я форма (V3 / Partizip II)" autocomplete="off">
+      </div>
+      <div id="write-inputs-single" class="hidden">
+        <input type="text" id="inp-word" class="input-field" style="margin-bottom:10px;" placeholder="Введи ответ..." autocomplete="off">
+      </div>
+
+      <button id="write-check-btn" class="btn-primary">✔️ Проверить правописание</button>
+      <div id="write-fb" class="feedback-box hidden"></div>
+      <button id="write-next-btn" class="btn-primary hidden" style="margin-top:8px;">Следующее задание ➔</button>
+    </div>
+  </section>
+
+  <!-- ==================== TAB 4: ИНСТРУМЕНТЫ (АКЦЕНТЫ, РАСЧЁТЫ, ЗАЧЁТ, ПРОФИЛЬ) ==================== -->
+  <section id="view-4" class="hidden">
+    <div class="sub-tabs" id="tools-subtabs">
+      <button class="sub-tab active" data-sub="phonetics">🎙️ Акценты</button>
+      <button class="sub-tab" data-sub="calc">🧮 Расчёты</button>
+      <button class="sub-tab" data-sub="exam">🎓 Зачёт</button>
+      <button class="sub-tab" data-sub="profile">📊 Профиль</button>
+    </div>
+
+    <!-- SUB 1: ФОНЕТИКА UK & DE -->
+    <div id="sub-phonetics">
+      <div class="panel-card">
+        <div style="font-weight:800; font-size:15px; margin-bottom:8px;">🎙️ Лаборатория произношения (UK 🇬🇧 & DE 🇩🇪)</div>
+        <div style="font-size:12.5px; color:var(--text-muted); margin-bottom:10px;">Введи любое слово или фразу и послушай в британском (en-GB) или немецком (de-DE) произношении.</div>
+        <input type="text" id="tts-custom-input" class="input-field" value="Water, schedule, neither — Ich möchte sprechen" placeholder="Введи слово или фразу...">
+        <div style="display:flex; gap:8px; margin-top:10px; flex-wrap:wrap;">
+          <button class="pill-btn active" id="tts-test-uk">🔊 Британский (UK)</button>
+          <button class="pill-btn" id="tts-test-de" style="background:rgba(6,182,212,0.18); color:#22D3EE; border-color:rgba(6,182,212,0.4);">🔊 Немецкий (DE)</button>
+        </div>
+      </div>
+
+      <div class="chip-row" id="accent-lang-chips">
+        <button class="pill-btn active" data-acclang="uk">🇬🇧 Британский акцент (Modern RP)</button>
+        <button class="pill-btn" data-acclang="de">🇩🇪 Немецкий акцент (Hochdeutsch)</button>
+      </div>
+      <div id="accent-rules-list"></div>
+    </div>
+
+    <!-- SUB 2: РАСЧЁТЫ -->
+    <div id="sub-calc" class="hidden">
+      <div class="panel-card">
+        <div style="font-weight:800; font-size:15.5px; margin-bottom:4px;">🧮 Калькулятор IELTS Band & CEFR / Goethe</div>
+        <div style="font-size:12.5px; color:var(--text-muted); margin-bottom:14px;">Официальное округление IELTS (до ближайших 0.5) + перевод в CEFR, Goethe-Zertifikat и ОГЭ/ЕГЭ.</div>
+
+        <div class="slider-row">
+          <div class="slider-head"><span>🎧 Listening</span><span id="val-l">6.5</span></div>
+          <input type="range" id="sl-l" min="3.0" max="9.0" step="0.5" value="6.5">
+        </div>
+        <div class="slider-row">
+          <div class="slider-head"><span>📖 Reading</span><span id="val-r">7.0</span></div>
+          <input type="range" id="sl-r" min="3.0" max="9.0" step="0.5" value="7.0">
+        </div>
+        <div class="slider-row">
+          <div class="slider-head"><span>✍️ Writing</span><span id="val-w">6.0</span></div>
+          <input type="range" id="sl-w" min="3.0" max="9.0" step="0.5" value="6.0">
+        </div>
+        <div class="slider-row">
+          <div class="slider-head"><span>🗣️ Speaking</span><span id="val-s">6.5</span></div>
+          <input type="range" id="sl-s" min="3.0" max="9.0" step="0.5" value="6.5">
+        </div>
+
+        <div class="result-banner">
+          <div style="font-size:12px; font-weight:700; color:var(--text-muted); text-transform:uppercase;">Итоговый IELTS Band</div>
+          <div class="result-big" id="ielts-overall">6.5</div>
+          <div class="result-grid">
+            <div class="metric-box">
+              <div class="metric-val" id="ielts-cefr">B2</div>
+              <div class="metric-lbl">Уровень CEFR</div>
+            </div>
+            <div class="metric-box">
+              <div class="metric-val" id="ielts-ege">~80–88</div>
+              <div class="metric-lbl">Оценка ЕГЭ</div>
+            </div>
+            <div class="metric-box">
+              <div class="metric-val" id="ielts-de">Goethe B2</div>
+              <div class="metric-lbl">Аналог DE</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel-card">
+        <div style="font-weight:800; font-size:15.5px; margin-bottom:4px;">⏱️ Расчёт срока до цели (Roadmap)</div>
+        <div style="font-size:12.5px; color:var(--text-muted); margin-bottom:12px;">На основе стандартов Cambridge / Goethe-Institut (часы активной практики).</div>
+        <div class="btn-grid-2" style="margin-bottom:10px;">
+          <div>
+            <label for="calc-cur" style="font-size:11.5px; font-weight:700; color:var(--text-muted);">ТЕКУЩИЙ УРОВЕНЬ</label>
+            <select id="calc-cur" class="select-field" style="margin-top:4px;">
+              <option value="0">A1 (Начальный)</option>
+              <option value="1" selected>A2 (Базовый)</option>
+              <option value="2">B1 (Средний)</option>
+              <option value="3">B2 (Выше среднего)</option>
+            </select>
+          </div>
+          <div>
+            <label for="calc-tgt" style="font-size:11.5px; font-weight:700; color:var(--text-muted);">ЦЕЛЕВОЙ УРОВЕНЬ</label>
+            <select id="calc-tgt" class="select-field" style="margin-top:4px;">
+              <option value="1">A2 (Базовый)</option>
+              <option value="2">B1 (Средний)</option>
+              <option value="3">B2 (Upper / Goethe B2)</option>
+              <option value="4" selected>C1 (IELTS 7.0+)</option>
+            </select>
+          </div>
+        </div>
+        <div class="slider-row">
+          <div class="slider-head"><span>📅 Занятий в день</span><span id="val-mins">45 мин/день</span></div>
+          <input type="range" id="sl-mins" min="15" max="150" step="5" value="45">
+        </div>
+        <div class="result-banner" id="roadmap-result"></div>
+      </div>
+    </div>
+
+    <!-- SUB 3: ЗАЧЁТ -->
+    <div id="sub-exam" class="hidden">
+      <div class="panel-card">
+        <label for="exam-select" style="display:block; font-size:12px; font-weight:700; color:var(--text-muted); margin-bottom:6px;">ВЫБЕРИ ЗАЧЁТ</label>
+        <select id="exam-select" class="select-field"></select>
+      </div>
+      <div class="panel-card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+          <span class="badge badge-c1" id="exam-prog">Вопрос 1</span>
+          <button class="pill-btn" id="exam-restart">🔄 Начать заново</button>
+        </div>
+        <div id="exam-q" style="font-size:16.5px; font-weight:700; line-height:1.45; margin-bottom:14px;"></div>
+        <div id="exam-opts"></div>
+        <div id="exam-res" class="hidden" style="white-space:pre-line; font-size:13.5px; line-height:1.5; margin-top:10px;"></div>
+      </div>
+    </div>
+
+    <!-- SUB 4: ПРОФИЛЬ -->
+    <div id="sub-profile" class="hidden">
+      <div id="profile-box"></div>
+      <div class="panel-card">
+        <div style="font-weight:800; font-size:14.5px; margin-bottom:8px;">💾 Сохранение и перенос (english_c1_save.json)</div>
+        <div style="font-size:12.5px; color:var(--text-muted); margin-bottom:10px;">Совместимо с твоим старым файлом <code>english_c1_save.json</code> — можешь экспортировать прогресс или загрузить прошлый JSON.</div>
+        <div class="btn-grid-2" style="margin-bottom:8px;">
+          <button class="btn-secondary" id="btn-export-json">⬇️ Скачать JSON</button>
+          <button class="btn-secondary" id="btn-import-open">⬆️ Импорт JSON</button>
+        </div>
+        <button class="btn-secondary" id="btn-reset-open" style="color:var(--danger); border-color:rgba(239,68,68,0.35);">🗑️ Сбросить прогресс</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- MODAL: IMPORT / RESET -->
+<div class="modal-backdrop" id="modal-backdrop">
+  <div class="modal-box" id="modal-content"></div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ==================== DATA: 115 ENGLISH IRREGULAR VERBS ==================== */
+const RAW_EN_VERBS = [
+  ["arise","arose","arisen","возникать / появляться (B2-C1)","5. Третья форма на -en / -n"],
+  ["awake","awoke","awoken","будить / просыпаться","5. Третья форма на -en / -n"],
+  ["be","was/were","been","быть / находиться","5. Третья форма на -en / -n"],
+  ["beat","beat","beaten","бить / побеждать соперника","5. Третья форма на -en / -n"],
+  ["become","became","become","становиться","5. Третья форма на -en / -n"],
+  ["begin","began","begun","начинать(ся)","2. Чередование i – a – u"],
+  ["bend","bent","bent","сгибать(ся)","4. Вторая и третья совпадают"],
+  ["bet","bet","bet","держать пари / ставить","1. Три формы одинаковые"],
+  ["bite","bit","bitten","кусать","5. Третья форма на -en / -n"],
+  ["bleed","bled","bled","кровоточить","4. Вторая и третья совпадают"],
+  ["blow","blew","blown","дуть","5. Третья форма на -en / -n"],
+  ["break","broke","broken","ломать / нарушать","5. Третья форма на -en / -n"],
+  ["bring","brought","brought","приносить","3. Формы на -ought / -aught"],
+  ["broadcast","broadcast","broadcast","транслировать в эфир","1. Три формы одинаковые"],
+  ["build","built","built","строить / собирать проект","4. Вторая и третья совпадают"],
+  ["burn","burnt","burnt","гореть / сжигать","4. Вторая и третья совпадают"],
+  ["burst","burst","burst","взрываться / лопаться","1. Три формы одинаковые"],
+  ["buy","bought","bought","покупать","3. Формы на -ought / -aught"],
+  ["catch","caught","caught","ловить / успевать","3. Формы на -ought / -aught"],
+  ["choose","chose","chosen","выбирать","5. Третья форма на -en / -n"],
+  ["come","came","come","приходить / приезжать","5. Третья форма на -en / -n"],
+  ["cost","cost","cost","стоить","1. Три формы одинаковые"],
+  ["cut","cut","cut","резать","1. Три формы одинаковые"],
+  ["deal","dealt","dealt","иметь дело / разбираться","4. Вторая и третья совпадают"],
+  ["dig","dug","dug","копать / рыть","4. Вторая и третья совпадают"],
+  ["do","did","done","делать / выполнять","5. Третья форма на -en / -n"],
+  ["draw","drew","drawn","рисовать / тащить","5. Третья форма на -en / -n"],
+  ["dream","dreamt","dreamt","мечтать / видеть сон","4. Вторая и третья совпадают"],
+  ["drink","drank","drunk","пить","2. Чередование i – a – u"],
+  ["drive","drove","driven","водить машину","5. Третья форма на -en / -n"],
+  ["eat","ate","eaten","есть (кушать)","5. Третья форма на -en / -n"],
+  ["fall","fell","fallen","падать","5. Третья форма на -en / -n"],
+  ["feed","fed","fed","кормить","4. Вторая и третья совпадают"],
+  ["feel","felt","felt","чувствовать","4. Вторая и третья совпадают"],
+  ["fight","fought","fought","бороться / драться","3. Формы на -ought / -aught"],
+  ["find","found","found","находить","4. Вторая и третья совпадают"],
+  ["fly","flew","flown","летать","5. Третья форма на -en / -n"],
+  ["forbid","forbade","forbidden","запрещать (B2-C1)","5. Третья форма на -en / -n"],
+  ["forget","forgot","forgotten","забывать","5. Третья форма на -en / -n"],
+  ["forgive","forgave","forgiven","прощать","5. Третья форма на -en / -n"],
+  ["freeze","froze","frozen","замерзать / зависать","5. Третья форма на -en / -n"],
+  ["get","got","got","получать / добираться","4. Вторая и третья совпадают"],
+  ["give","gave","given","давать","5. Третья форма на -en / -n"],
+  ["go","went","gone","идти / ехать","5. Третья форма на -en / -n"],
+  ["grow","grew","grown","расти / выращивать","5. Третья форма на -en / -n"],
+  ["hang","hung","hung","вешать / висеть","4. Вторая и третья совпадают"],
+  ["have","had","had","иметь","4. Вторая и третья совпадают"],
+  ["hear","heard","heard","слышать","4. Вторая и третья совпадают"],
+  ["hide","hid","hidden","прятать(ся)","5. Третья форма на -en / -n"],
+  ["hit","hit","hit","ударять / попадать","1. Три формы одинаковые"],
+  ["hold","held","held","держать / проводить","4. Вторая и третья совпадают"],
+  ["hurt","hurt","hurt","причинять боль / ранить","1. Три формы одинаковые"],
+  ["keep","kept","kept","хранить / продолжать","4. Вторая и третья совпадают"],
+  ["know","knew","known","знать","5. Третья форма на -en / -n"],
+  ["lay","laid","laid","класть / накрывать","4. Вторая и третья совпадают"],
+  ["lead","led","led","вести за собой / приводить к","4. Вторая и третья совпадают"],
+  ["learn","learnt","learnt","учить / узнавать","4. Вторая и третья совпадают"],
+  ["leave","left","left","уходить / оставлять","4. Вторая и третья совпадают"],
+  ["lend","lent","lent","давать взаймы","4. Вторая и третья совпадают"],
+  ["let","let","let","позволять / пускать","1. Три формы одинаковые"],
+  ["lie","lay","lain","лежать","5. Третья форма на -en / -n"],
+  ["light","lit","lit","зажигать / освещать","4. Вторая и третья совпадают"],
+  ["lose","lost","lost","терять / проигрывать","4. Вторая и третья совпадают"],
+  ["make","made","made","делать / создавать","4. Вторая и третья совпадают"],
+  ["mean","meant","meant","означать / иметь в виду","4. Вторая и третья совпадают"],
+  ["meet","met","met","встречать(ся)","4. Вторая и третья совпадают"],
+  ["mistake","mistook","mistaken","ошибаться","5. Третья форма на -en / -n"],
+  ["overcome","overcame","overcome","преодолевать (B2-C1)","5. Третья форма на -en / -n"],
+  ["pay","paid","paid","платить","4. Вторая и третья совпадают"],
+  ["put","put","put","класть / ставить","1. Три формы одинаковые"],
+  ["quit","quit","quit","бросать / выходить","1. Три формы одинаковые"],
+  ["read","read","read","читать (произносится: /red/)","1. Три формы одинаковые"],
+  ["ride","rode","ridden","ездить верхом","5. Третья форма на -en / -n"],
+  ["ring","rang","rung","звонить / звенеть","2. Чередование i – a – u"],
+  ["rise","rose","risen","подниматься / расти","5. Третья форма на -en / -n"],
+  ["run","ran","run","бежать / запускать код","2. Чередование i – a – u"],
+  ["say","said","said","говорить / сказать","4. Вторая и третья совпадают"],
+  ["see","saw","seen","видеть","5. Третья форма на -en / -n"],
+  ["seek","sought","sought","искать / стремиться (B2-C1)","3. Формы на -ought / -aught"],
+  ["sell","sold","sold","продавать","4. Вторая и третья совпадают"],
+  ["send","sent","sent","отправлять","4. Вторая и третья совпадают"],
+  ["set","set","set","устанавливать / настраивать","1. Три формы одинаковые"],
+  ["shake","shook","shaken","трясти","5. Третья форма на -en / -n"],
+  ["shine","shone","shone","светить / сиять","4. Вторая и третья совпадают"],
+  ["shoot","shot","shot","стрелять / снимать","4. Вторая и третья совпадают"],
+  ["show","showed","shown","показывать","5. Третья форма на -en / -n"],
+  ["shrink","shrank","shrunk","сжиматься / сокращаться","2. Чередование i – a – u"],
+  ["shut","shut","shut","закрывать / захлопывать","1. Три формы одинаковые"],
+  ["sing","sang","sung","петь","2. Чередование i – a – u"],
+  ["sink","sank","sunk","тонуть","2. Чередование i – a – u"],
+  ["sit","sat","sat","сидеть","4. Вторая и третья совпадают"],
+  ["sleep","slept","slept","спать","4. Вторая и третья совпадают"],
+  ["speak","spoke","spoken","говорить / разговаривать","5. Третья форма на -en / -n"],
+  ["spend","spent","spent","тратить (деньги/время)","4. Вторая и третья совпадают"],
+  ["split","split","split","разделять / раскалывать","1. Три формы одинаковые"],
+  ["spread","spread","spread","распространять(ся)","1. Три формы одинаковые"],
+  ["spring","sprang","sprung","прыгать / возникать","2. Чередование i – a – u"],
+  ["stand","stood","stood","стоять","4. Вторая и третья совпадают"],
+  ["steal","stole","stolen","красть","5. Третья форма на -en / -n"],
+  ["stick","stuck","stuck","приклеивать / застревать","4. Вторая и третья совпадают"],
+  ["strike","struck","struck","ударять / поражать","4. Вторая и третья совпадают"],
+  ["swear","swore","sworn","клясться","5. Третья форма на -en / -n"],
+  ["sweep","swept","swept","подметать","4. Вторая и третья совпадают"],
+  ["swim","swam","swum","плавать","2. Чередование i – a – u"],
+  ["take","took","taken","брать","5. Третья форма на -en / -n"],
+  ["teach","taught","taught","обучать / преподавать","3. Формы на -ought / -aught"],
+  ["tear","tore","torn","рвать","5. Третья форма на -en / -n"],
+  ["tell","told","told","рассказывать","4. Вторая и третья совпадают"],
+  ["think","thought","thought","думать","3. Формы на -ought / -aught"],
+  ["throw","threw","thrown","бросать","5. Третья форма на -en / -n"],
+  ["understand","understood","understood","понимать","4. Вторая и третья совпадают"],
+  ["wake","woke","woken","просыпаться","5. Третья форма на -en / -n"],
+  ["wear","wore","worn","носить (одежду)","5. Третья форма на -en / -n"],
+  ["win","won","won","побеждать / выигрывать","4. Вторая и третья совпадают"],
+  ["write","wrote","written","писать","5. Третья форма на -en / -n"]
+];
+
+const RAW_DE_VERBS = [
+  ["sein","war","ist gewesen","быть","A1"],
+  ["haben","hatte","hat gehabt","иметь","A1"],
+  ["werden","wurde","ist geworden","становиться","A1"],
+  ["gehen","ging","ist gegangen","идти / ходить","A1"],
+  ["kommen","kam","ist gekommen","приходить","A1"],
+  ["fahren","fuhr","ist gefahren","ехать","A1"],
+  ["sehen","sah","hat gesehen","видеть","A1"],
+  ["sprechen","sprach","hat gesprochen","говорить","A1"],
+  ["nehmen","nahm","hat genommen","брать","A2"],
+  ["geben","gab","hat gegeben","давать","A2"],
+  ["finden","fand","hat gefunden","находить","A2"],
+  ["schreiben","schrieb","hat geschrieben","писать","A2"],
+  ["lesen","las","hat gelesen","читать","A2"],
+  ["bleiben","blieb","ist geblieben","оставаться","A2"],
+  ["beginnen","begann","hat begonnen","начинать","B1"],
+  ["entscheiden","entschied","hat entschieden","решать","B1"],
+  ["verstehen","verstand","hat verstanden","понимать","B1"],
+  ["vergessen","vergaß","hat vergessen","забывать","B1"],
+  ["empfehlen","empfahl","hat empfohlen","рекомендовать","B2"],
+  ["übernehmen","übernahm","hat übernommen","брать на себя","B2"]
+];
+
+const EN_VERBS = RAW_EN_VERBS.map(v => ({v1:v[0], v2:v[1], v3:v[2], ru:v[3], group:v[4], letter:v[0][0].toUpperCase(), lang:"en-GB"}));
+const DE_VERBS = RAW_DE_VERBS.map(v => ({v1:v[0], v2:v[1], v3:v[2], ru:v[3], group:"Deutsch "+v[4], letter:v[0][0].toUpperCase(), lang:"de-DE"}));
+const EN_LETTERS = [...new Set(EN_VERBS.map(v => v.letter))].sort();
+
+/* ==================== DATA: CHEAT-SHEET TOPICS ==================== */
+const CATEGORIES = [
+  { id:"en_a2b1", title:"EN A2–B1 (Времена)", short:"EN A2–B1", color:"#F59E0B" },
+  { id:"en_b2",   title:"EN B1–B2 (Spotlight)", short:"EN B2", color:"#A855F7" },
+  { id:"en_c1",   title:"EN C1 (IELTS Pro)", short:"EN C1 IELTS", color:"#F43F5E" },
+  { id:"verbs",   title:"115 Глаголов A–Z", short:"Глаголы A–Z", color:"#6366F1", isVerbs:true },
+  { id:"de_a1a2", title:"Deutsch A1–A2", short:"DE A1–A2", color:"#06B6D4" },
+  { id:"de_b1b2", title:"Deutsch B1–B2", short:"DE B1–B2", color:"#10B981" }
+];
+
+const CHEAT_TOPICS = [
+  {
+    id:"t_en1", cat:"en_a2b1", lang:"en-GB", lvl:"EN A2–B1",
+    title:"Present Perfect vs Past Simple",
+    sub:"Результат сейчас vs завершённое время в прошлом",
+    formula:"Present Perfect: have / has + V3  (already, yet, just, ever, since, for)\nPast Simple: V2 / -ed  (yesterday, ago, last week, in 2024)",
+    body:"Если важен результат в настоящем и точный момент не назван — ставь Present Perfect. Если указано конкретное время в прошлом — только Past Simple.",
+    examples:[
+      { text:"I have lost my keys and I can't get in.", ipa:"/aɪ hæv lɒst maɪ kiːz/", ru:"Я потерял ключи (и сейчас не могу войти)." },
+      { text:"We went to London two years ago.", ipa:"/wiː went tə ˈlʌndən tuː jɪəz əˈɡəʊ/", ru:"Мы ездили в Лондон два года назад." }
+    ]
+  },
+  {
+    id:"t_en2", cat:"en_a2b1", lang:"en-GB", lvl:"EN A2–B1",
+    title:"Past Continuous & Past Perfect",
+    sub:"Длительный фон и действие «раньше прошлого»",
+    formula:"Past Continuous: was / were + V-ing  (while...)\nPast Perfect: had + V3  (by the time, before)",
+    body:"Past Continuous описывает процесс, который прервало короткое действие (Past Simple). Past Perfect показывает, что случилось ДО другого события в прошлом.",
+    examples:[
+      { text:"While I was writing code, the power went out.", ipa:"/waɪl aɪ wəz ˈraɪtɪŋ kəʊd/", ru:"Пока я писал код, выключили свет." },
+      { text:"By the time the teacher arrived, we had finished.", ipa:"/wiː hæd ˈfɪnɪʃt/", ru:"К приходу учителя мы уже закончили." }
+    ]
+  },
+  {
+    id:"t_en3", cat:"en_a2b1", lang:"en-GB", lvl:"EN B1",
+    title:"Present Perfect Continuous & Future Forms",
+    sub:"Длительность до сейчас (for/since) и will vs be going to",
+    formula:"PPC: have / has been + V-ing\nОчевидный прогноз / план: be going to + V1\nСпонтанное решение: will + V1",
+    body:"Present Perfect Continuous подчёркивает сам процесс, который длился и виден его след сейчас. Для прогноза по внешним признакам (тучи) всегда используй be going to.",
+    examples:[
+      { text:"He has been studying English for three hours.", ipa:"/hiː hæz biːn ˈstʌdiɪŋ ˈɪŋɡlɪʃ/", ru:"Он учит английский уже три часа." },
+      { text:"Look at those dark clouds — it is going to rain.", ipa:"/ɪt ɪz ˈɡəʊɪŋ tə reɪn/", ru:"Посмотри на тучи — сейчас пойдёт дождь." }
+    ]
+  },
+  {
+    id:"t_en4", cat:"en_b2", lang:"en-GB", lvl:"EN B1–B2",
+    title:"Фразовые глаголы Spotlight (Top 12)",
+    sub:"give, take, look, put, run, get",
+    formula:"GIVE: give up (бросить), give in (уступить), give away (выдать)\nPUT: put off (отложить), put up with (терпеть), put out (потушить)\nTAKE: take after (быть похожим), take up (начать хобби)\nRUN: run out of (закончиться), run into (случайно встретить)",
+    body:"Фразовые глаголы — обязательная база B1–B2 для Spotlight, ОГЭ/ЕГЭ и разговорной речи. Учи их сразу в готовых словосочетаниях.",
+    examples:[
+      { text:"Never put off until tomorrow what you can do today.", ipa:"/ˈnevə pʊt ɒf/", ru:"Никогда не откладывай на завтра то, что можно сделать сегодня." },
+      { text:"I can't put up with this noise any longer.", ipa:"/pʊt ʌp wɪð ðɪs nɔɪz/", ru:"Я больше не могу терпеть этот шум." }
+    ]
+  },
+  {
+    id:"t_en5", cat:"en_b2", lang:"en-GB", lvl:"EN B1–B2",
+    title:"Герундий (V-ing) vs Инфинитив (to V1)",
+    sub:"Какие глаголы требуют -ing, а какие to",
+    formula:"V-ing: enjoy, avoid, suggest, mind, finish, keep, look forward to\nto + V1: decide, promise, refuse, manage, afford, offer, expect",
+    body:"Частая ловушка: после предлога «to» в выражениях look forward to, be used to, object to всегда идёт герундий (V-ing)!",
+    examples:[
+      { text:"I really look forward to hearing from you soon.", ipa:"/lʊk ˈfɔːwəd tə ˈhɪərɪŋ/", ru:"С нетерпением жду от вас ответа." },
+      { text:"He avoided answering my question directly.", ipa:"/hiː əˈvɔɪdɪd ˈɑːnsərɪŋ/", ru:"Он избегал прямого ответа на мой вопрос." }
+    ]
+  },
+  {
+    id:"t_en6", cat:"en_b2", lang:"en-GB", lvl:"EN B2",
+    title:"Conditionals (1, 2, 3), I wish & Causative",
+    sub:"Условные предложения и конструкция have something done",
+    formula:"1st (реально): If + Present Simple, will + V1\n2nd (сейчас нереально): If + Past Simple (were), would + V1\n3rd (сожаление о прошлом): If + had V3, would have + V3\nCausative: have + объект + V3  (услугу сделали для нас)",
+    body:"После if / when / as soon as в придаточном будущем НЕ ставим will! Конструкция I wish + Past Simple = жаль сейчас; I wish + had V3 = жаль о прошлом.",
+    examples:[
+      { text:"If I had more free time, I would learn German faster.", ipa:"/ɪf aɪ hæd mɔː friː taɪm/", ru:"Если бы у меня было больше времени, я бы учил немецкий быстрее." },
+      { text:"I had my laptop upgraded at the service centre.", ipa:"/aɪ hæd maɪ ˈlæptɒp ʌpˈɡreɪdɪd/", ru:"Мне обновили ноутбук в сервисе." }
+    ]
+  },
+  {
+    id:"t_en7", cat:"en_c1", lang:"en-GB", lvl:"EN C1 IELTS",
+    title:"Инверсия (Inversion) для IELTS 7.5+",
+    sub:"Обратный порядок слов после отрицательных наречий",
+    formula:"Never / Rarely / Seldom / Not only / Little + вспомог. глагол + подлежащее + V\nHardly had I + V3 ... when ...\nNo sooner had I + V3 ... than ...",
+    body:"Инверсия мгновенно поднимает оценку по Grammatical Range в IELTS Writing & Speaking до уровня C1. Глагол выносится перед подлежащим как в вопросе.",
+    examples:[
+      { text:"Never before have I seen such a clean architecture.", ipa:"/ˈnevə bɪˈfɔː hæv aɪ siːn/", ru:"Никогда прежде я не видел такой чистой архитектуры." },
+      { text:"Not only did he fix the bug, but he also sped up the app.", ipa:"/nɒt ˈəʊnli dɪd hiː fɪks/", ru:"Он не только исправил баг, но и ускорил приложение." }
+    ]
+  },
+  {
+    id:"t_en8", cat:"en_c1", lang:"en-GB", lvl:"EN C1 IELTS",
+    title:"Mixed Conditionals, Participle & Cleft",
+    sub:"Смешанные условия и эмфатические конструкции",
+    formula:"Mixed: If + had V3 (прошлое) ➔ would + V1 (сейчас)\nParticiple: Having + V3, S + V  (сделав что-то...)\nCleft: What you need is ... / It was X who ...",
+    body:"Mixed Conditional связывает прошлый выбор с настоящим результатом. Cleft-предложения помогают сделать сильный акцент на главной мысли.",
+    examples:[
+      { text:"If she had accepted that offer, she would live in Berlin now.", ipa:"/ʃiː wʊd lɪv ɪn bɜːˈlɪn naʊ/", ru:"Если бы она приняла оффер тогда, сейчас она жила бы в Берлине." },
+      { text:"What you need to reach C1 is consistent daily practice.", ipa:"/wɒt juː niːd tə riːtʃ siː wʌn/", ru:"То, что тебе нужно для C1 — это регулярная практика." }
+    ]
+  },
+  {
+    id:"t_en9", cat:"en_c1", lang:"en-GB", lvl:"EN B2–C1",
+    title:"IELTS Linking Words & Word Formation",
+    sub:"Связки высокого уровня и словообразование",
+    formula:"Контраст: Nevertheless, Nonetheless, Whereas, Despite (+ сущ./V-ing)\nДобавление: Furthermore, Moreover, In addition\nСледствие: Consequently, Therefore, Hence\nПриставки: un-, im- (m/p), il-, ir-, dis-, mis-",
+    body:"Помни разницу: Although + подлежащее и сказуемое, а Despite / In spite of + существительное или V-ing.",
+    examples:[
+      { text:"Despite the heavy traffic, we arrived on schedule.", ipa:"/dɪˈspaɪt ðə ˈhevi ˈtræfɪk/", ru:"Несмотря на пробки, мы приехали по расписанию." },
+      { text:"Artificial intelligence has become ubiquitous in daily life.", ipa:"/juːˈbɪkwɪtəs/", ru:"ИИ стал вездесущим в повседневной жизни." }
+    ]
+  },
+  {
+    id:"t_de1", cat:"de_a1a2", lang:"de-DE", lvl:"DE A1",
+    title:"Артикли (der, die, das) и род существительных",
+    sub:"Окончания-подсказки для быстрого определения рода",
+    formula:"DER (муж.): -er, -en, -ig, -ling, -ismus, дни недели, месяцы\nDIE (жен.): -ung, -heit, -keit, -schaft, -ion, -tät, -e (90%)\nDAS (сред.): -chen, -lein, -ment, -um, инфинитивы (das Essen)",
+    body:"Все немецкие существительные пишутся с ЗАГЛАВНОЙ буквы. Учи каждое слово сразу с артиклем и формой множественного числа!",
+    examples:[
+      { text:"Die Entscheidung ist sehr wichtig für mich.", ipa:"/diː ɛntˈʃaɪ̯dʊŋ ɪst zeːɐ̯ ˈvɪçtɪç/", ru:"Это решение очень важно для меня." },
+      { text:"Das Mädchen liest ein interessantes Buch.", ipa:"/das ˈmɛːtçən liːst aɪ̯n buːx/", ru:"Девочка читает интересную книгу." }
+    ]
+  },
+  {
+    id:"t_de2", cat:"de_a1a2", lang:"de-DE", lvl:"DE A1–A2",
+    title:"4 Падежа: Nominativ, Akkusativ, Dativ, Genitiv",
+    sub:"Как меняются артикли der / die / das / die (Pl.)",
+    formula:"Nom (кто?):   der  | die | das | die\nAkk (кого?):  DEN  | die | das | die\nDat (кому?):  DEM  | DER | DEM | DEN (+n)\nGen (чей?):   DES  | DER | DES | DER",
+    body:"Главный лайфхак A1–A2: в Akkusativ меняется только мужской род (der ➔ den). В Dativ запоминай мнемонику «m-r-m-n» (dem, der, dem, den + окончание -n у сущ.).",
+    examples:[
+      { text:"Ich sehe den Lehrer und gebe dem Freund das Buch.", ipa:"/ɪç ˈzeːə deːn ˈleːʁɐ/", ru:"Я вижу учителя (Akk) и даю другу (Dat) книгу (Akk)." },
+      { text:"Das ist das Auto meines Bruders.", ipa:"/das ɪst das ˈaʊ̯to ˈmaɪ̯nəs ˈbʁuːdɐs/", ru:"Это машина моего брата (Genitiv)." }
+    ]
+  },
+  {
+    id:"t_de3", cat:"de_a1a2", lang:"de-DE", lvl:"DE A2",
+    title:"Perfekt (прошедшее разговорное): haben vs sein",
+    sub:"Рамочная конструкция и Partizip II",
+    formula:"haben / sein (2-е место) + ... + Partizip II (в самом конце!)\nSEIN: движение (gehen, fahren, fliegen), смена состояния (aufwachen), sein, bleiben, werden\nHABEN: все остальные глаголы",
+    body:"В немецком разговорном языке Perfekt — главное прошедшее время. У слабых глаголов Partizip II = ge + основа + t (gemacht), без ge- у приставок be-, ver-, er-, ent-, -ieren.",
+    examples:[
+      { text:"Gestern bin ich früh nach Hause gegangen.", ipa:"/ˈɡɛstɐn bɪn ɪç fʁyː nax ˈhaʊ̯zə ɡəˈɡaŋən/", ru:"Вчера я рано пошёл домой." },
+      { text:"Ich habe das neue Programm schon installiert.", ipa:"/ɪç ˈhaːbə das ˈnɔʏ̯ə pʁoˈɡʁam ɪnstaˈliːɐ̯t/", ru:"Я уже установил новую программу." }
+    ]
+  },
+  {
+    id:"t_de4", cat:"de_b1b2", lang:"de-DE", lvl:"DE B1",
+    title:"Придаточные (Nebensätze): weil, dass, obwohl, wenn",
+    sub:"Почему глагол улетает в самый конец",
+    formula:"Главное, + weil / dass / obwohl / wenn + Подлежащее + ... + ГЛАГОЛ.\nСоюзы ADUSO (aber, denn, und, sondern, oder) — порядок слов НЕ меняют!",
+    body:"После weil (потому что), dass (что), obwohl (хотя), wenn (если/когда) спрягаемый глагол всегда стоит в самом конце предложения. Запятая перед союзом обязательна!",
+    examples:[
+      { text:"Ich lerne Deutsch, weil ich in Berlin studieren möchte.", ipa:"/vaɪ̯l ɪç ɪn bɛʁˈliːn ʃtuˈdiːʁən ˈmœçtə/", ru:"Я учу немецкий, потому что хочу учиться в Берлине." },
+      { text:"Obwohl es regnet, gehen wir spazieren.", ipa:"/ɔpˈvoːl ɛs ˈʁeːɡnət/", ru:"Хотя идёт дождь, мы идём гулять." }
+    ]
+  },
+  {
+    id:"t_de5", cat:"de_b1b2", lang:"de-DE", lvl:"DE B1–B2",
+    title:"Konjunktiv II (Вежливость и «если бы»)",
+    sub:"würde + Infinitiv, wäre, hätte, könnte",
+    formula:"Стандарт: würde + ... + Infinitiv\nИсключения (без würde!): wäre (был бы), hätte (имел бы), könnte (мог бы), müsste (должен был бы)",
+    body:"Для вежливых просьб и нереальных условий уровня B1–B2 используй Konjunktiv II. Никогда не говори «würde haben» — правильно только «hätte»!",
+    examples:[
+      { text:"Wenn ich mehr Zeit hätte, würde ich noch eine Sprache lernen.", ipa:"/vɛn ɪç meːɐ̯ tsaɪ̯t ˈhɛtə/", ru:"Если бы у меня было больше времени, я бы выучил ещё один язык." },
+      { text:"Könnten Sie mir bitte helfen?", ipa:"/ˈkœntən ziː miːɐ̯ ˈbɪtə ˈhɛlfən/", ru:"Не могли бы вы мне помочь?" }
+    ]
+  },
+  {
+    id:"t_de6", cat:"de_b1b2", lang:"de-DE", lvl:"DE B2",
+    title:"Passiv (Страдательный залог) & Nomen-Verb",
+    sub:"Vorgangspassiv (werden + P.II) для Goethe B2",
+    formula:"Präsens Passiv: werden + Partizip II\nPräteritum Passiv: wurden + Partizip II\nКем? ➔ von + Dativ (люди/силы) | durch + Akk (способ)",
+    body:"В экзамене Goethe B2 высоко ценятся пассивные конструкции и устойчивые сочетания Nomen-Verb (eine Entscheidung treffen — принять решение, eine Rolle spielen — играть роль).",
+    examples:[
+      { text:"Die Brücke wird gerade von Ingenieuren gebaut.", ipa:"/diː ˈbʁʏkə vɪʁt ɡəˈʁaːdə ɡəˈbaʊ̯t/", ru:"Мост прямо сейчас строится инженерами." },
+      { text:"Wir müssen heute eine wichtige Entscheidung treffen.", ipa:"/ˈaɪ̯nə ˈvɪçtɪɡə ɛntˈʃaɪ̯dʊŋ ˈtʁɛfən/", ru:"Мы должны сегодня принять важное решение." }
+    ]
+  }
+];
+
+/* ==================== DATA: QUESTIONS (30 EN + 18 DE = 48) ==================== */
+const QUESTIONS = [
+  // EN Module 1
+  {id:101, mod:"🇬🇧 EN 1: Времена (A2–B1)", lvl:"EN A2–B1", lang:"en-GB", q:"I ___ my keys! I can't open the door right now.", opts:["lost","have lost","had lost","was losing"], a:"have lost", r:"Present Perfect (have/has + V3): важен результат прямо сейчас."},
+  {id:102, mod:"🇬🇧 EN 1: Времена (A2–B1)", lvl:"EN A2–B1", lang:"en-GB", q:"We ___ to Astana two years ago.", opts:["have been","went","had gone","were going"], a:"went", r:"Маркер 'two years ago' требует Past Simple (V2)."},
+  {id:103, mod:"🇬🇧 EN 1: Времена (A2–B1)", lvl:"EN A2–B1", lang:"en-GB", q:"While I ___ a Python script, the power went out.", opts:["wrote","have written","was writing","had written"], a:"was writing", r:"Past Continuous (was/were + V-ing) — длительный фон в прошлом."},
+  {id:104, mod:"🇬🇧 EN 1: Времена (A2–B1)", lvl:"EN B1", lang:"en-GB", q:"By the time the teacher came in, the students ___ already ___ the test.", opts:["have / finished","had / finished","were / finishing","did / finish"], a:"had / finished", r:"By the time + прошлое ➔ Past Perfect (had + V3)."},
+  {id:105, mod:"🇬🇧 EN 1: Времена (A2–B1)", lvl:"EN B1", lang:"en-GB", q:"His eyes are tired because he ___ code for 5 hours.", opts:["writes","is writing","has been writing","wrote"], a:"has been writing", r:"Present Perfect Continuous: длилось 5 часов и виден результат сейчас."},
+  {id:106, mod:"🇬🇧 EN 1: Времена (A2–B1)", lvl:"EN A2–B1", lang:"en-GB", q:"Look at those black clouds! It ___ rain in a few minutes.", opts:["will","is going to","shall","rains"], a:"is going to", r:"Прогноз по очевидным признакам (тучи) — 'be going to'."},
+  // EN Module 2
+  {id:201, mod:"🇬🇧 EN 2: Глаголы Spotlight (B1–B2)", lvl:"EN B1", lang:"en-GB", q:"I really look forward to ___ from you soon.", opts:["hear","hearing","heard","be heard"], a:"hearing", r:"После 'look forward to' всегда используется герундий (V-ing)."},
+  {id:202, mod:"🇬🇧 EN 2: Глаголы Spotlight (B1–B2)", lvl:"EN B1–B2", lang:"en-GB", q:"Never ___ until tomorrow what you can do today.", opts:["put off","put up with","put out","put on"], a:"put off", r:"'Put off' — откладывать на потом."},
+  {id:203, mod:"🇬🇧 EN 2: Глаголы Spotlight (B1–B2)", lvl:"EN B2", lang:"en-GB", q:"I don't know how you ___ such noisy neighbours!", opts:["put off","put up with","take after","run out of"], a:"put up with", r:"'Put up with' — мириться с чем-то, терпеть."},
+  {id:204, mod:"🇬🇧 EN 2: Глаголы Spotlight (B1–B2)", lvl:"EN B1", lang:"en-GB", q:"He avoided ___ my question directly.", opts:["to answer","answering","answer","answered"], a:"answering", r:"После avoid, enjoy, suggest, mind, finish всегда идёт V-ing."},
+  {id:205, mod:"🇬🇧 EN 2: Глаголы Spotlight (B1–B2)", lvl:"EN B1–B2", lang:"en-GB", q:"We have ___ milk, so I need to go to the shop.", opts:["run into","run out of","given away","taken off"], a:"run out of", r:"'Run out of' — закончиться (о запасах)."},
+  {id:206, mod:"🇬🇧 EN 2: Глаголы Spotlight (B1–B2)", lvl:"EN B1–B2", lang:"en-GB", q:"John really ___ his father; they have the same character.", opts:["takes off","takes after","takes up","takes over"], a:"takes after", r:"'Take after' — быть похожим на старших в семье."},
+  // EN Module 3
+  {id:301, mod:"🇬🇧 EN 3: Конструкции B2", lvl:"EN B2", lang:"en-GB", q:"If I ___ more free time right now, I would learn C#.", opts:["have","had","would have","had had"], a:"had", r:"Second Conditional (нереальное настоящее): If + Past Simple, would + V1."},
+  {id:302, mod:"🇬🇧 EN 3: Конструкции B2", lvl:"EN B2", lang:"en-GB", q:"If they had left earlier yesterday, they ___ the train.", opts:["wouldn't miss","won't miss","wouldn't have missed","hadn't missed"], a:"wouldn't have missed", r:"Third Conditional (прошлое): If + had V3, would(n't) have + V3."},
+  {id:303, mod:"🇬🇧 EN 3: Конструкции B2", lvl:"EN B2", lang:"en-GB", q:"I didn't repair the phone myself — I ___ at the service centre.", opts:["repaired it","had it repaired","had repaired it","was repaired"], a:"had it repaired", r:"Causative (have + предмет + V3) — мне его починили."},
+  {id:304, mod:"🇬🇧 EN 3: Конструкции B2", lvl:"EN B2", lang:"en-GB", q:"I wish I ___ harder before last week's exam.", opts:["studied","had studied","would study","have studied"], a:"had studied", r:"Сожаление о прошлом после 'I wish' требует Past Perfect (had + V3)."},
+  {id:305, mod:"🇬🇧 EN 3: Конструкции B2", lvl:"EN B1–B2", lang:"en-GB", q:"Wait a minute, the new update ___ installed right now.", opts:["is","is being","has been","was"], a:"is being", r:"Present Continuous Passive (is being + V3) — устанавливается сейчас."},
+  {id:306, mod:"🇬🇧 EN 3: Конструкции B2", lvl:"EN B2", lang:"en-GB", q:"I will call you as soon as I ___ at the airport tomorrow.", opts:["will arrive","arrive","arrived","would arrive"], a:"arrive", r:"После as soon as / when / if в будущем ставится Present Simple!"},
+  // EN Module 4
+  {id:401, mod:"🇬🇧 EN 4: Грамматика C1 (IELTS)", lvl:"EN C1", lang:"en-GB", q:"Never before ___ such a clean Python script.", opts:["I have seen","have I seen","I saw","did I saw"], a:"have I seen", r:"Инверсия (C1): после 'Never before' идёт порядок слов как в вопросе."},
+  {id:402, mod:"🇬🇧 EN 4: Грамматика C1 (IELTS)", lvl:"EN C1", lang:"en-GB", q:"Not only ___ the bug, but he also optimised the database.", opts:["he fixed","did he fix","fixed he","has he fix"], a:"did he fix", r:"Инверсия после 'Not only' в Past Simple: did + подлежащее + V1."},
+  {id:403, mod:"🇬🇧 EN 4: Грамматика C1 (IELTS)", lvl:"EN C1", lang:"en-GB", q:"If she had accepted that offer in 2024, she ___ in Berlin right now.", opts:["would live","would have lived","will live","lived"], a:"would live", r:"Mixed Conditional: условие в прошлом, результат СЕЙЧАС (would live)."},
+  {id:404, mod:"🇬🇧 EN 4: Грамматика C1 (IELTS)", lvl:"EN C1", lang:"en-GB", q:"___ all his homework, he went to the pull-up bar.", opts:["Finished","Having finished","Being finished","To finish"], a:"Having finished", r:"Having + V3 показывает действие, завершённое до второго действия."},
+  {id:405, mod:"🇬🇧 EN 4: Грамматика C1 (IELTS)", lvl:"EN C1", lang:"en-GB", q:"Hardly ___ the house when it started pouring with rain.", opts:["had I left","I had left","did I leave","have I left"], a:"had I left", r:"Hardly had I + V3 ... when ... — инверсия уровня C1."},
+  {id:406, mod:"🇬🇧 EN 4: Грамматика C1 (IELTS)", lvl:"EN C1", lang:"en-GB", q:"___ you need to reach C1 is consistent daily practice.", opts:["That","What","Which","Who"], a:"What", r:"Cleft Sentence: 'What you need is...' (То, что тебе нужно — это...)."},
+  // EN Module 5
+  {id:501, mod:"🇬🇧 EN 5: IELTS Лексика & Word Formation", lvl:"EN B2–C1", lang:"en-GB", q:"The task was difficult; ___, the team completed it on time.", opts:["nevertheless","despite","although","whereas"], a:"nevertheless", r:"После точки с запятой перед запятой ставится вводное 'nevertheless'."},
+  {id:502, mod:"🇬🇧 EN 5: IELTS Лексика & Word Formation", lvl:"EN B2", lang:"en-GB", q:"Word Formation (RELY): We need a ___ server for our project.", opts:["relyable","reliable","relible","unrelyable"], a:"reliable", r:"rely ➔ reliable (буква 'y' меняется на 'i' перед -able)."},
+  {id:503, mod:"🇬🇧 EN 5: IELTS Лексика & Word Formation", lvl:"EN B2–C1", lang:"en-GB", q:"___ the heavy traffic, we arrived at the station on time.", opts:["Although","However","Despite","Even though"], a:"Despite", r:"После 'Despite' идёт существительное (the heavy traffic)."},
+  {id:504, mod:"🇬🇧 EN 5: IELTS Лексика & Word Formation", lvl:"EN B2", lang:"en-GB", q:"Word Formation (UNDERSTAND): The error was caused by a simple ___.", opts:["ununderstanding","misunderstanding","disunderstanding","inunderstanding"], a:"misunderstanding", r:"Приставка MIS- означает ошибочное действие ➔ misunderstanding."},
+  {id:505, mod:"🇬🇧 EN 5: IELTS Лексика & Word Formation", lvl:"EN C1", lang:"en-GB", q:"Artificial Intelligence has become ___ in modern software development.", opts:["ubiquitous","reluctant","obsolete","scarce"], a:"ubiquitous", r:"Лексика C1: ubiquitous — вездесущий, повсеместный."},
+  {id:506, mod:"🇬🇧 EN 5: IELTS Лексика & Word Formation", lvl:"EN B2–C1", lang:"en-GB", q:"Word Formation (STRONG): Daily pull-ups will ___ your back muscles.", opts:["strongen","strengthen","strength","enstrong"], a:"strengthen", r:"strong ➔ strength (сила) ➔ strengthen (укреплять)."},
+  // DE A1-A2
+  {id:601, mod:"🇩🇪 DE 1: Артикли & Падежи (A1–A2)", lvl:"DE A1", lang:"de-DE", q:"Ich kaufe ___ neuen Laptop für die Schule.", opts:["der","den","dem","das"], a:"den", r:"der Laptop в Akkusativ (кого? что?) становится DEN."},
+  {id:602, mod:"🇩🇪 DE 1: Артикли & Падежи (A1–A2)", lvl:"DE A1", lang:"de-DE", q:"Welcher Artikel passt zu «Entscheidung»?", opts:["der","die","das","den"], a:"die", r:"Все существительные на -ung ВСЕГДА женского рода (die)."},
+  {id:603, mod:"🇩🇪 DE 1: Артикли & Падежи (A1–A2)", lvl:"DE A2", lang:"de-DE", q:"Ich helfe ___ Freund bei den Hausaufgaben.", opts:["der","den","dem","des"], a:"dem", r:"Глагол helfen всегда требует Dativ: der Freund ➔ dem Freund."},
+  {id:604, mod:"🇩🇪 DE 1: Артикли & Падежи (A1–A2)", lvl:"DE A2", lang:"de-DE", q:"Gestern ___ wir mit dem Zug nach München gefahren.", opts:["haben","sind","waren","wurden"], a:"sind", r:"fahren — глагол движения, поэтому в Perfekt используется SEIN (wir sind gefahren)."},
+  {id:605, mod:"🇩🇪 DE 1: Артикли & Падежи (A1–A2)", lvl:"DE A1", lang:"de-DE", q:"Das ___ (Mädchen) lernt jeden Tag Englisch und Deutsch.", opts:["der","die","das","dem"], a:"das", r:"Суффикс -chen всегда делает существительное среднего рода (das Mädchen)."},
+  {id:606, mod:"🇩🇪 DE 1: Артикли & Падежи (A1–A2)", lvl:"DE A2", lang:"de-DE", q:"Er ___ gestern das ganze Buch gelesen.", opts:["ist","hat","war","wird"], a:"hat", r:"lesen — не глагол движения, поэтому в Perfekt ставится HABEN (hat gelesen)."},
+  // DE B1-B2
+  {id:701, mod:"🇩🇪 DE 2: Nebensätze, Konjunktiv & Passiv (B1–B2)", lvl:"DE B1", lang:"de-DE", q:"Ich bleibe zu Hause, weil ich heute viel lernen ___.", opts:["muss","müssen","muss ich","ich muss"], a:"muss", r:"После союза 'weil' спрягаемый глагол уходит в самый конец предложения."},
+  {id:702, mod:"🇩🇪 DE 2: Nebensätze, Konjunktiv & Passiv (B1–B2)", lvl:"DE B1", lang:"de-DE", q:"___ es stark regnet, gehen wir trotzdem ins Fitnessstudio.", opts:["Weil","Obwohl","Denn","Aber"], a:"Obwohl", r:"Obwohl = «хотя» (уступка + глагол в конце)."},
+  {id:703, mod:"🇩🇪 DE 2: Nebensätze, Konjunktiv & Passiv (B1–B2)", lvl:"DE B1–B2", lang:"de-DE", q:"Wenn ich mehr Zeit ___, würde ich öfter reisen.", opts:["habe","hatte","hätte","würde haben"], a:"hätte", r:"Konjunktiv II от haben — это 'hätte' (нельзя говорить 'würde haben')."},
+  {id:704, mod:"🇩🇪 DE 2: Nebensätze, Konjunktiv & Passiv (B1–B2)", lvl:"DE B2", lang:"de-DE", q:"Die neue App ___ gerade von einem Team entwickelt.", opts:["ist","hat","wird","wurde"], a:"wird", r:"Präsens Passiv (прямо сейчас — gerade): wird + Partizip II."},
+  {id:705, mod:"🇩🇪 DE 2: Nebensätze, Konjunktiv & Passiv (B1–B2)", lvl:"DE B2", lang:"de-DE", q:"Wir müssen endlich eine klare Entscheidung ___.", opts:["machen","tun","treffen","nehmen"], a:"treffen", r:"Устойчивое выражение B2 (Nomen-Verb): eine Entscheidung treffen (принять решение)."},
+  {id:706, mod:"🇩🇪 DE 2: Nebensätze, Konjunktiv & Passiv (B1–B2)", lvl:"DE B2", lang:"de-DE", q:"Trotz ___ schlechten Wetters sind wir pünktlich angekommen.", opts:["dem","den","des","der"], a:"des", r:"Предлог trotz требует Genitiv: das Wetter ➔ des schlechten Wetters."}
+];
+
+/* ==================== DATA: SPELLING & WRITING ==================== */
+const EN_SPELLING = [
+  {type:"Word Formation (Spotlight / ЕГЭ)", lang:"en-GB", p:"Образуй прилагательное от [RELY]: We need a ___ connection.", a:"reliable", h:"Меняем 'y' на 'i' + -able."},
+  {type:"Word Formation (Spotlight / ЕГЭ)", lang:"en-GB", p:"Образуй глагол от [STRONG]: Pull-ups will ___ your muscles.", a:"strengthen", h:"strong ➔ strength + -en."},
+  {type:"Word Formation (Spotlight / ЕГЭ)", lang:"en-GB", p:"Образуй существительное от [DEVELOP]: Software ___ is my goal.", a:"development", h:"develop + -ment."},
+  {type:"Word Formation (Spotlight / ЕГЭ)", lang:"en-GB", p:"Отрицательная форма от [POSSIBLE]: It was ___ to fix.", a:"impossible", h:"Перед 'p' приставка in- превращается в im-."},
+  {type:"IELTS Spelling (B2–C1)", lang:"en-GB", p:"Напиши по-английски «жильё / размещение» (две c и две m):", a:"accommodation", h:"aCCoMModation."},
+  {type:"IELTS Spelling (B2–C1)", lang:"en-GB", p:"Напиши по-английски «определённо / точно»:", a:"definitely", h:"de-FINITE-ly (без буквы 'a'!)."},
+  {type:"IELTS Spelling (B2–C1)", lang:"en-GB", p:"Напиши по-английски «окружающая среда»:", a:"environment", h:"enviroNment."},
+  {type:"IELTS Spelling (B2–C1)", lang:"en-GB", p:"Напиши по-английски «необходимый» (одна C, две S):", a:"necessary", h:"neCeSSary."},
+  {type:"British Spelling (UK)", lang:"en-GB", p:"Британское написание слова «цвет» (colour / color):", a:"colour", h:"В британском варианте пишется -our (colour, flavour, neighbour)."},
+  {type:"British Spelling (UK)", lang:"en-GB", p:"Британское написание слова «центр» (centre / center):", a:"centre", h:"В британском варианте пишется -re (centre, theatre, metre)."}
+];
+
+const DE_ARTICLES = [
+  {type:"Deutsch Артикль (A1–A2)", lang:"de-DE", p:"Напиши правильный артикль (der / die / das) для: ___ Entscheidung (решение)", a:"die", speak:"die Entscheidung", h:"Все слова на -ung — женского рода (die)."},
+  {type:"Deutsch Артикль (A1–A2)", lang:"de-DE", p:"Напиши правильный артикль (der / die / das) для: ___ Mädchen (девочка)", a:"das", speak:"das Mädchen", h:"Уменьшительный суффикс -chen всегда среднего рода (das)."},
+  {type:"Deutsch Артикль (A1–A2)", lang:"de-DE", p:"Напиши правильный артикль (der / die / das) для: ___ Freiheit (свобода)", a:"die", speak:"die Freiheit", h:"Окончания -heit / -keit всегда женского рода (die)."},
+  {type:"Deutsch Артикль (A1–A2)", lang:"de-DE", p:"Напиши правильный артикль (der / die / das) для: ___ Lehrer (учитель)", a:"der", speak:"der Lehrer", h:"Профессии мужского рода на -er — всегда der."},
+  {type:"Deutsch Артикль (A1–A2)", lang:"de-DE", p:"Напиши правильный артикль (der / die / das) для: ___ Studium (учёба в вузе)", a:"das", speak:"das Studium", h:"Латинские слова на -um всегда среднего рода (das)."},
+  {type:"Deutsch Артикль (A1–A2)", lang:"de-DE", p:"Напиши правильный артикль (der / die / das) для: ___ Universität (университет)", a:"die", speak:"die Universität", h:"Слова на -tät всегда женского рода (die)."},
+  {type:"Deutsch Правописание (B1–B2)", lang:"de-DE", p:"Напиши по-немецки союз «потому что» (глагол в конце):", a:"weil", speak:"weil", h:"weil — читается «вайль» (ei = ай)."},
+  {type:"Deutsch Правописание (B1–B2)", lang:"de-DE", p:"Напиши по-немецки союз «хотя» (глагол в конце):", a:"obwohl", speak:"obwohl", h:"obwohl (не забудь немую 'h' для долготы 'o')."}
+];
+
+/* ==================== DATA: FLASHCARDS ==================== */
+const FLASHCARDS = [
+  {id:"fc1", deck:"en_gram", lang:"en-GB", badge:"EN C1", front:"Ubiquitous", ipa:"/juːˈbɪkwɪtəs/", back:"Вездесущий, повсеместный", ex:"Smartphones have become ubiquitous in modern society."},
+  {id:"fc2", deck:"en_gram", lang:"en-GB", badge:"EN B2", front:"Put up with", ipa:"/pʊt ʌp wɪð/", back:"Мириться с чем-то, терпеть", ex:"I can't put up with constant delays."},
+  {id:"fc3", deck:"en_gram", lang:"en-GB", badge:"EN C1", front:"Never have I seen...", ipa:"/ˈnevə hæv aɪ siːn/", back:"Инверсия: Никогда я ещё не видел...", ex:"Never have I seen such dedication."},
+  {id:"fc4", deck:"en_gram", lang:"en-GB", badge:"EN B2", front:"Despite + Noun / V-ing", ipa:"/dɪˈspaɪt/", back:"Несмотря на... (без предлога of!)", ex:"Despite being tired, he finished the project."},
+  {id:"fc5", deck:"en_gram", lang:"en-GB", badge:"EN C1", front:"Reluctant", ipa:"/rɪˈlʌktənt/", back:"Неохотный, сомневающийся", ex:"She was reluctant to accept the new terms."},
+  {id:"fc6", deck:"en_gram", lang:"en-GB", badge:"EN B2", front:"Have something done", ipa:"/hæv ˈsʌmθɪŋ dʌn/", back:"Каузатив: сделать что-то чужими руками", ex:"I had my bike repaired yesterday."},
+  {id:"fc7", deck:"en_gram", lang:"en-GB", badge:"EN B1", front:"Look forward to + V-ing", ipa:"/lʊk ˈfɔːwəd tə/", back:"Ждать с нетерпением (всегда + -ing!)", ex:"I look forward to meeting you in London."},
+  {id:"fc8", deck:"en_gram", lang:"en-GB", badge:"EN C1", front:"Nevertheless", ipa:"/ˌnevəðəˈles/", back:"Тем не менее (связка IELTS)", ex:"The exam was tough; nevertheless, she passed."},
+  {id:"fc9", deck:"de_all", lang:"de-DE", badge:"DE A2", front:"die Entscheidung", ipa:"/diː ɛntˈʃaɪ̯dʊŋ/", back:"Решение (ж.р. — суффикс -ung)", ex:"Wir müssen eine gute Entscheidung treffen."},
+  {id:"fc10", deck:"de_all", lang:"de-DE", badge:"DE B1", front:"obwohl", ipa:"/ɔpˈvoːl/", back:"Хотя (глагол уходит в конец!)", ex:"Obwohl es kalt ist, gehen wir laufen."},
+  {id:"fc11", deck:"de_all", lang:"de-DE", badge:"DE B1", front:"Ich hätte gern...", ipa:"/ɪç ˈhɛtə ɡɛʁn/", back:"Я бы хотел... (вежливо, Konjunktiv II)", ex:"Ich hätte gern einen Kaffee, bitte."},
+  {id:"fc12", deck:"de_all", lang:"de-DE", badge:"DE B2", front:"trotz + Genitiv", ipa:"/tʁɔts/", back:"Несмотря на... (требует Genitiv)", ex:"Trotz des Regens sind wir spazieren gegangen."},
+  {id:"fc13", deck:"de_all", lang:"de-DE", badge:"DE A1", front:"die Geschwindigkeit", ipa:"/diː ɡəˈʃvɪndɪçkaɪ̯t/", back:"Скорость (ж.р. — суффикс -keit)", ex:"Die Geschwindigkeit ist hier begrenzt."},
+  {id:"fc14", deck:"de_all", lang:"de-DE", badge:"DE B2", front:"eine Rolle spielen", ipa:"/ˈaɪ̯nə ˈʁɔlə ˈʃpiːlən/", back:"Играть роль (Nomen-Verb B2)", ex:"Disziplin spielt eine große Rolle beim Lernen."}
+];
+
+/* ==================== DATA: PHONETICS (UK & DE) ==================== */
+const ACCENT_GUIDES = {
+  uk: [
+    {
+      title:"1. Non-rhotic «R» (Непроизносимая R)",
+      rule:"В британском RP звук /r/ НЕ читается в конце слова и перед согласной — вместо него удлиняется гласная или появляется нейтральный /ə/ (шва). Но перед гласной (red, very) /r/ звучит мягко.",
+      words:[
+        { w:"car · water · better", ipa:"/kɑː/ · /ˈwɔːtə/ · /ˈbetə/", ru:"каа · уоотэ · бэтэ (без твёрдой «р»)" },
+        { w:"Park the car near the harbour.", ipa:"/pɑːk ðə kɑː nɪə ðə ˈhɑːbə/", ru:"Тренировка протяжных гласных без R" }
+      ]
+    },
+    {
+      title:"2. Долгий /ɑː/ (TRAP–BATH Split)",
+      rule:"В южнобританском акценте буква «a» перед f, s, th, n+согл часто звучит как глубокое открытое /ɑː/ (как в «а-а» у врача), а не как американское /æ/.",
+      words:[
+        { w:"bath · ask · can't · dance · class", ipa:"/bɑːθ/ · /ɑːsk/ · /kɑːnt/ · /dɑːns/ · /klɑːs/", ru:"баас · ааск · каант · даанс · клаас" },
+        { w:"I can't ask for a better class.", ipa:"/aɪ kɑːnt ɑːsk fər ə ˈbetə klɑːs/", ru:"Сравни с американским — здесь чёткое /ɑː/" }
+      ]
+    },
+    {
+      title:"3. Округлый короткий /ɒ/ (LOT Vowel)",
+      rule:"Короткое «o» произносится с слегка округлёнными губами — ближе к глубокому русскому «о», а не к американскому «а».",
+      words:[
+        { w:"hot · coffee · stop · bottle · London", ipa:"/hɒt/ · /ˈkɒfi/ · /stɒp/ · /ˈbɒtl/", ru:"хот · кофи · стоп · ботл" },
+        { w:"A hot cup of coffee at the shop.", ipa:"/ə hɒt kʌp əv ˈkɒfi ət ðə ʃɒp/", ru:"Чёткое короткое «о» во всех словах" }
+      ]
+    },
+    {
+      title:"4. Чёткое «T» с придыханием (Aspirated T)",
+      rule:"В отличие от американского «water → wader», в классическом британском /t/ в середине слова остаётся чётким и отчётливым, на альвеолах (бугорок за верхними зубами).",
+      words:[
+        { w:"water · city · bottle · twenty · British", ipa:"/ˈwɔːtə/ · /ˈsɪti/ · /ˈbɒtl/ · /ˈtwenti/", ru:"уоотэ · сити · ботл (без замены на «д»)" }
+      ]
+    },
+    {
+      title:"5. Межзубные «TH» (/θ/ и /ð/)",
+      rule:"Кончик языка слегка касается края верхних зубов (не заменяй на «с/з» или «ф»!). Глухой /θ/ — просто выдох; звонкий /ð/ — с голосом.",
+      words:[
+        { w:"think · three · through · theatre", ipa:"/θɪŋk/ · /θriː/ · /θruː/ · /ˈθɪətə/", ru:"Глухой /θ/: мягкий поток воздуха" },
+        { w:"this · that · weather · brother", ipa:"/ðɪs/ · /ðæt/ · /ˈweðə/ · /ˈbrʌðə/", ru:"Звонкий /ð/: с вибрацией связок" }
+      ]
+    },
+    {
+      title:"6. Британский дифтонг /əʊ/",
+      rule:"Буква «o» в открытом слоге начинается с нейтрального /ə/ и плавно уходит в /ʊ/ (как мягкое «эу»).",
+      words:[
+        { w:"go · no · home · phone · don't", ipa:"/ɡəʊ/ · /nəʊ/ · /həʊm/ · /fəʊn/ · /dəʊnt/", ru:"гэу · нэу · хэум · фэун" }
+      ]
+    }
+  ],
+  de: [
+    {
+      title:"1. Умлауты: Ü / Ö / Ä (Главная фишка немецкого)",
+      rule:"Ü [yː]: вытяни губы трубочкой как для «у», но произнеси «и». Ö [øː]: губы как для «о», но произнеси «э». Ä [ɛː]: открытое, чуть долгое «э».",
+      words:[
+        { w:"über · fünf · Bücher · Schüler", ipa:"/ˈyːbɐ/ · /fʏnf/ · /ˈbyːçɐ/", ru:"губы «у» + звук «и»" },
+        { w:"schön · können · zwölf · öffnen", ipa:"/ʃøːn/ · /ˈkœnən/ · /tsvœlf/", ru:"губы «о» + звук «э»" },
+        { w:"Mädchen · spät · wählen", ipa:"/ˈmɛːtçən/ · /ʃpɛːt/", ru:"чистое открытое «э»" }
+      ]
+    },
+    {
+      title:"2. Два звука «CH»: Ich-Laut [ç] vs Ach-Laut [x]",
+      rule:"После e, i, ä, ö, ü, eu, ei и согласных — мягкий шипящий [ç] (как мягкое «хь» в слове «химия»). После a, o, u, au — твёрдый горловой [x] (как русское «х»).",
+      words:[
+        { w:"ich · nicht · sprechen · Mädchen", ipa:"/ɪç/ · /nɪçt/ · /ˈʃpʁɛçən/", ru:"Мягкий Ich-Laut [ç]" },
+        { w:"Buch · machen · Nacht · auch", ipa:"/buːx/ · /ˈmaxən/ · /naxt/ · /aʊ̯x/", ru:"Твёрдый Ach-Laut [x]" }
+      ]
+    },
+    {
+      title:"3. Немецкое «R» и окончание «-er»",
+      rule:"В начале слова и слога R — мягкое горловое (увулярное) [ʁ], не раскатистое русское! А в конце слова «-er» превращается в короткое «а» [ɐ] (Wasser → васса).",
+      words:[
+        { w:"rot · richtig · fragen · Berlin", ipa:"/ʁoːt/ · /ˈʁɪçtɪç/ · /ˈfʁaːɡən/", ru:"Мягкое увулярное [ʁ]" },
+        { w:"Wasser · Lehrer · Mutter · aber", ipa:"/ˈvasɐ/ · /ˈleːʁɐ/ · /ˈmʊtɐ/", ru:"Конечное -er звучит как «а»" }
+      ]
+    },
+    {
+      title:"4. Начальные SP / ST и звонкое «S»",
+      rule:"В начале слова или корня sp = «шп», st = «шт». Одиночная «s» перед гласной всегда звонкая [z] (как русское «з»!).",
+      words:[
+        { w:"sprechen · Stadt · Stunde · verstehen", ipa:"/ˈʃpʁɛçən/ · /ʃtat/ · /ˈʃtʊndə/", ru:"шпрехьен · штат · штунде" },
+        { w:"Sonne · sein · sieben · lesen", ipa:"/ˈzɔnə/ · /zaɪ̯n/ · /ˈziːbən/", ru:"зонне · зайн · зибен" }
+      ]
+    },
+    {
+      title:"5. Дифтонги: EI, IE, EU / ÄU",
+      rule:"Золотое правило чтения: EI = «ай», IE = долгое «ии», EU и ÄU = «ой». Не путай их!",
+      words:[
+        { w:"mein · Zeit · Arbeit · eins", ipa:"/maɪ̯n/ · /tsaɪ̯t/ · /ˈaʁbaɪ̯t/", ru:"EI → «ай» (майн, цайт)" },
+        { w:"Liebe · spielen · sieben · viel", ipa:"/ˈliːbə/ · /ˈʃpiːlən/ · /fiːl/", ru:"IE → долгое «и» (либе, шпилен)" },
+        { w:"deutsch · heute · Häuser · Freund", ipa:"/dɔʏ̯tʃ/ · /ˈhɔʏ̯tə/ · /ˈhɔʏ̯zɐ/", ru:"EU/ÄU → «ой» (дойч, хойте)" }
+      ]
+    }
+  ]
+};
+
+/* ==================== STATE & STORAGE ==================== */
+const DEFAULT_STORE = {
+  xp: 0,
+  streak: 0,
+  mistakes: [],
+  verbMistakes: [],
+  verbsMastered: [],
+  deVerbsMastered: [],
+  learnedTopics: [],
+  favTopics: [],
+  scores: {},
+  theme: "dark"
+};
+
+let store = { ...DEFAULT_STORE };
+try {
+  const saved = localStorage.getItem("lingua_uk_de_pro_v1");
+  if (saved) store = { ...DEFAULT_STORE, ...JSON.parse(saved) };
+} catch (e) {}
+
+function saveStore() {
+  try { localStorage.setItem("lingua_uk_de_pro_v1", JSON.stringify(store)); } catch (e) {}
+  document.getElementById("hdr-xp").textContent = "⭐ " + store.xp;
+  document.getElementById("hdr-streak").textContent = "🔥 " + store.streak;
+}
+
+function showToast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(window._toastTimer);
+  window._toastTimer = setTimeout(() => t.classList.remove("show"), 2300);
+}
+
+/* ==================== SPEECH SYNTHESIS (UK & DE) ==================== */
+let ttsRate = 1.0;
+let voicesCache = [];
+function loadVoices() {
+  if (!("speechSynthesis" in window)) return;
+  voicesCache = window.speechSynthesis.getVoices() || [];
+}
+if ("speechSynthesis" in window) {
+  loadVoices();
+  window.speechSynthesis.onvoiceschanged = loadVoices;
+}
+
+function speakText(text, lang = "en-GB", rateOverride = null) {
+  if (!("speechSynthesis" in window)) {
+    showToast("Озвучка недоступна в этом браузере");
+    return;
+  }
+  try {
+    window.speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = lang;
+    utter.rate = rateOverride !== null ? rateOverride : ttsRate;
+    const prefix = lang.toLowerCase();
+    const exact = voicesCache.find(v => v.lang && v.lang.toLowerCase().replace("_","-") === prefix);
+    const broad = voicesCache.find(v => v.lang && v.lang.toLowerCase().startsWith(prefix.slice(0,2)));
+    if (exact) utter.voice = exact;
+    else if (broad) utter.voice = broad;
+    window.speechSynthesis.speak(utter);
+  } catch (e) {
+    showToast("Не удалось воспроизвести звук");
+  }
+}
+
+/* ==================== THEME & NAVIGATION ==================== */
+function applyTheme() {
+  document.documentElement.setAttribute("data-theme", store.theme || "dark");
+}
+document.getElementById("theme-toggle").addEventListener("click", () => {
+  store.theme = store.theme === "dark" ? "light" : "dark";
+  applyTheme();
+  saveStore();
+});
+
+let activeTab = 0;
+function switchTab(idx) {
+  activeTab = idx;
+  for (let i = 0; i < 5; i++) {
+    document.getElementById("view-" + i).classList.toggle("hidden", i !== idx);
+  }
+  document.querySelectorAll(".nav-tab").forEach(btn => {
+    btn.classList.toggle("active", Number(btn.dataset.tab) === idx);
+  });
+  if (idx === 0) renderCheatSheet();
+  if (idx === 1) renderFlashcard();
+  if (idx === 4) renderProfile();
+}
+document.querySelectorAll(".nav-tab").forEach(btn => {
+  btn.addEventListener("click", () => switchTab(Number(btn.dataset.tab)));
+});
+
+/* ==================== TAB 0: ШПАРГАЛКА ==================== */
+let curCat = "all";
+let onlyFav = false;
+let onlyUnlearned = false;
+let expandedTopicId = "t_en1";
+let verbLang = "en";
+let curAlpha = "ВСЕ";
+
+function getCatProgress(cat) {
+  if (cat.isVerbs) {
+    return { done: store.verbsMastered.length, total: EN_VERBS.length };
+  }
+  const items = CHEAT_TOPICS.filter(t => t.cat === cat.id);
+  const done = items.filter(t => store.learnedTopics.includes(t.id)).length;
+  return { done, total: items.length };
+}
+
+function renderProgressGrid() {
+  const grid = document.getElementById("progress-grid");
+  grid.innerHTML = "";
+  CATEGORIES.forEach(c => {
+    const p = getCatProgress(c);
+    const pct = p.total ? Math.round((p.done / p.total) * 100) : 0;
+    const card = document.createElement("button");
+    card.className = "prog-card" + (curCat === c.id ? " selected" : "");
+    card.innerHTML = `
+      <div class="prog-top">
+        <div class="prog-title-wrap">
+          <span class="prog-dot" style="background:${c.color};"></span>
+          <span class="prog-title" style="color:${c.color};">${c.title}</span>
+        </div>
+        <div class="prog-stat">${p.done}/${p.total}<br>(${pct}%)</div>
+      </div>
+      <div class="prog-bar-bg">
+        <div class="prog-bar-fill" style="width:${pct}%; background:${c.color};"></div>
+      </div>
+    `;
+    card.addEventListener("click", () => {
+      curCat = (curCat === c.id) ? "all" : c.id;
+      renderCheatSheet();
+    });
+    grid.appendChild(card);
+  });
+}
+
+function renderCatChips() {
+  const wrap = document.getElementById("cat-chips");
+  wrap.innerHTML = "";
+  const allCats = [{ id:"all", short:"Все темы" }, ...CATEGORIES];
+  allCats.forEach(c => {
+    const b = document.createElement("button");
+    b.className = "pill-btn" + (curCat === c.id ? " active" : "");
+    b.textContent = c.short;
+    b.addEventListener("click", () => {
+      curCat = c.id;
+      renderCheatSheet();
+    });
+    wrap.appendChild(b);
+  });
+}
+
+function renderCheatSheet() {
+  renderProgressGrid();
+  renderCatChips();
+  document.getElementById("filter-fav").classList.toggle("active", onlyFav);
+  document.getElementById("filter-unlearned").classList.toggle("active", onlyUnlearned);
+
+  const verbsPanel = document.getElementById("verbs-panel");
+  const cheatList = document.getElementById("cheat-list");
+
+  if (curCat === "verbs") {
+    verbsPanel.classList.remove("hidden");
+    cheatList.innerHTML = "";
+    renderVerbsPanel();
+    return;
+  } else {
+    verbsPanel.classList.add("hidden");
+  }
+
+  const q = document.getElementById("cheat-search").value.trim().toLowerCase();
+  const filtered = CHEAT_TOPICS.filter(t => {
+    if (curCat !== "all" && t.cat !== curCat) return false;
+    if (onlyFav && !store.favTopics.includes(t.id)) return false;
+    if (onlyUnlearned && store.learnedTopics.includes(t.id)) return false;
+    if (q) {
+      const hay = `${t.title} ${t.sub} ${t.formula} ${t.body} ${t.lvl}`.toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+    return true;
+  });
+
+  cheatList.innerHTML = "";
+  if (filtered.length === 0) {
+    cheatList.innerHTML = `<div class="panel-card" style="text-align:center; color:var(--text-muted);">Ничего не найдено. Попробуй сбросить фильтр или изменить запрос.</div>`;
+    return;
+  }
+
+  filtered.forEach(t => {
+    const isFav = store.favTopics.includes(t.id);
+    const isDone = store.learnedTopics.includes(t.id);
+    const isOpen = expandedTopicId === t.id || q.length > 0;
+    const badgeClass = t.lang === "de-DE" ? "badge-de" : (t.cat === "en_c1" ? "badge-c1" : "badge-en");
+
+    const card = document.createElement("div");
+    card.className = "topic-card" + (isDone ? " learned" : "");
+    card.innerHTML = `
+      <div class="topic-head">
+        <div>
+          <div class="topic-badges">
+            <span class="badge ${badgeClass}">${t.lvl}</span>
+            ${isDone ? '<span class="badge badge-ok">✓ Изучено</span>' : ''}
+          </div>
+          <div class="topic-title">${t.title}</div>
+          <div class="topic-sub">${t.sub}</div>
+        </div>
+        <div class="topic-actions">
+          <button class="mini-btn ${isFav ? 'fav-on' : ''}" data-act="fav" title="В избранное">★</button>
+          <button class="mini-btn ${isDone ? 'done-on' : ''}" data-act="done" title="Отметить изученным">✓</button>
+        </div>
+      </div>
+      ${isOpen ? `
+        <div class="topic-body">
+          <div class="formula-box">${t.formula}</div>
+          <div style="margin:8px 0; color:var(--text-muted);">${t.body}</div>
+          <div>
+            ${t.examples.map((ex, idx) => `
+              <div class="example-row">
+                <div>
+                  <div class="example-en">${ex.text}</div>
+                  <div class="example-ipa">${ex.ipa}</div>
+                  <div class="example-ru">${ex.ru}</div>
+                </div>
+                <button class="speak-btn" data-ex="${idx}">🔊 ${t.lang === 'de-DE' ? 'DE' : 'UK'}</button>
+              </div>
+            `).join("")}
+          </div>
+        </div>
+      ` : ''}
+    `;
+
+    card.querySelector(".topic-head").addEventListener("click", (e) => {
+      if (e.target.closest("[data-act]")) return;
+      expandedTopicId = (expandedTopicId === t.id) ? null : t.id;
+      renderCheatSheet();
+    });
+    card.querySelector('[data-act="fav"]').addEventListener("click", () => {
+      if (store.favTopics.includes(t.id)) store.favTopics = store.favTopics.filter(x => x !== t.id);
+      else store.favTopics.push(t.id);
+      saveStore();
+      renderCheatSheet();
+    });
+    card.querySelector('[data-act="done"]').addEventListener("click", () => {
+      if (store.learnedTopics.includes(t.id)) {
+        store.learnedTopics = store.learnedTopics.filter(x => x !== t.id);
+      } else {
+        store.learnedTopics.push(t.id);
+        store.xp += 10;
+        showToast("+10 XP за изученную тему!");
+      }
+      saveStore();
+      renderCheatSheet();
+    });
+    card.querySelectorAll("[data-ex]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const ex = t.examples[Number(btn.dataset.ex)];
+        speakText(ex.text, t.lang);
+      });
+    });
+
+    cheatList.appendChild(card);
+  });
+}
+
+function renderVerbsPanel() {
+  const isEn = verbLang === "en";
+  document.getElementById("vlang-en").classList.toggle("active", isEn);
+  document.getElementById("vlang-de").classList.toggle("active", !isEn);
+  document.getElementById("verbs-panel-title").textContent = isEn
+    ? "📋 115 неправильных глаголов English (A–Z)"
+    : "📋 20 сильных глаголов Deutsch (A1–B2)";
+
+  const src = isEn ? EN_VERBS : DE_VERBS;
+  const masteredList = isEn ? store.verbsMastered : store.deVerbsMastered;
+  const letters = [...new Set(src.map(v => v.letter))].sort();
+  if (curAlpha !== "ВСЕ" && !letters.includes(curAlpha)) curAlpha = "ВСЕ";
+
+  const alphaBar = document.getElementById("alpha-bar");
+  alphaBar.innerHTML = "";
+  ["ВСЕ", ...letters].forEach(l => {
+    const b = document.createElement("button");
+    b.className = "alpha-chip" + (curAlpha === l ? " active" : "");
+    b.textContent = l;
+    b.addEventListener("click", () => { curAlpha = l; renderVerbsPanel(); });
+    alphaBar.appendChild(b);
+  });
+
+  const q = document.getElementById("cheat-search").value.trim().toLowerCase();
+  const filtered = src.filter(v => {
+    if (curAlpha !== "ВСЕ" && v.letter !== curAlpha) return false;
+    if (onlyUnlearned && masteredList.includes(v.v1)) return false;
+    if (q && !`${v.v1} ${v.v2} ${v.v3} ${v.ru} ${v.group}`.toLowerCase().includes(q)) return false;
+    return true;
+  });
+
+  document.getElementById("verbs-count-lbl").textContent = `Показано: ${filtered.length} | Выучено: ${masteredList.length}/${src.length}`;
+  const list = document.getElementById("verbs-list");
+  list.innerHTML = "";
+  filtered.forEach(v => {
+    const done = masteredList.includes(v.v1);
+    const row = document.createElement("div");
+    row.className = "verb-row";
+    row.innerHTML = `
+      <div class="verb-main">
+        <div class="verb-forms">${done ? "✅" : "🔹"} ${v.v1} — ${v.v2} — ${v.v3}</div>
+        <div class="verb-meta">${v.ru} · ${v.group}</div>
+      </div>
+      <button class="speak-btn">🔊 ${isEn ? 'UK' : 'DE'}</button>
+    `;
+    row.querySelector(".speak-btn").addEventListener("click", () => {
+      speakText(`${v.v1}, ${v.v2}, ${v.v3}`, v.lang);
+    });
+    list.appendChild(row);
+  });
+}
+
+document.getElementById("cheat-search").addEventListener("input", renderCheatSheet);
+document.getElementById("filter-fav").addEventListener("click", () => { onlyFav = !onlyFav; renderCheatSheet(); });
+document.getElementById("filter-unlearned").addEventListener("click", () => { onlyUnlearned = !onlyUnlearned; renderCheatSheet(); });
+document.getElementById("open-phonetics-quick").addEventListener("click", () => {
+  switchTab(4);
+  switchSubTab("phonetics");
+});
+document.getElementById("vlang-en").addEventListener("click", () => { verbLang = "en"; curAlpha = "ВСЕ"; renderVerbsPanel(); });
+document.getElementById("vlang-de").addEventListener("click", () => { verbLang = "de"; curAlpha = "ВСЕ"; renderVerbsPanel(); });
+document.getElementById("train-these-verbs").addEventListener("click", () => {
+  const sel = document.getElementById("write-select");
+  if (verbLang === "en") {
+    sel.value = curAlpha === "ВСЕ" ? "🇬🇧 115 Глаголов: Все подряд" : "🔤 EN Глаголы: По буквам A–Z";
+    if (curAlpha !== "ВСЕ") curWriteLetter = curAlpha;
+  } else {
+    sel.value = "🇩🇪 DE Сильные глаголы (A1–B2)";
+  }
+  initWritePool();
+  switchTab(3);
+});
+
+/* ==================== TAB 1: КАРТОЧКИ ==================== */
+let fcDeck = "all";
+let fcList = [];
+let fcIdx = 0;
+
+function buildFlashcardsPool() {
+  const verbCards = EN_VERBS.slice(0, 30).map(v => ({
+    id:"fcv_"+v.v1, deck:"en_verbs", lang:"en-GB", badge:"EN VERB",
+    front: v.v1.toUpperCase(), ipa: v.group,
+    back: `${v.v1} — ${v.v2} — ${v.v3}`, ex: `Перевод: ${v.ru}`
+  }));
+  const all = [...FLASHCARDS, ...verbCards];
+  if (fcDeck === "all") fcList = [...FLASHCARDS];
+  else if (fcDeck === "en_verbs") fcList = verbCards;
+  else fcList = all.filter(c => c.deck === fcDeck);
+  fcList.sort(() => Math.random() - 0.5);
+  fcIdx = 0;
+  renderFlashcard();
+}
+
+function initFlashcards() {
+  const decks = [
+    { id:"all", label:"Все (EN + DE)" },
+    { id:"en_gram", label:"🇬🇧 EN B1–C1" },
+    { id:"en_verbs", label:"🇬🇧 EN Глаголы" },
+    { id:"de_all", label:"🇩🇪 Deutsch A1–B2" }
+  ];
+  const wrap = document.getElementById("fc-deck-chips");
+  wrap.innerHTML = "";
+  decks.forEach(d => {
+    const b = document.createElement("button");
+    b.className = "pill-btn" + (fcDeck === d.id ? " active" : "");
+    b.textContent = d.label;
+    b.addEventListener("click", () => {
+      fcDeck = d.id;
+      wrap.querySelectorAll(".pill-btn").forEach(x => x.classList.remove("active"));
+      b.classList.add("active");
+      buildFlashcardsPool();
+    });
+    wrap.appendChild(b);
+  });
+  buildFlashcardsPool();
+}
+
+function renderFlashcard() {
+  const fcEl = document.getElementById("flashcard");
+  fcEl.classList.remove("flipped");
+  if (!fcList.length) return;
+  const c = fcList[fcIdx % fcList.length];
+  document.getElementById("fc-counter").textContent = `Карточка ${(fcIdx % fcList.length) + 1} / ${fcList.length}`;
+  const b = document.getElementById("fc-badge");
+  b.textContent = c.badge;
+  b.className = "badge " + (c.lang === "de-DE" ? "badge-de" : "badge-en");
+  document.getElementById("fc-front-text").textContent = c.front;
+  document.getElementById("fc-front-ipa").textContent = c.ipa;
+  document.getElementById("fc-back-text").textContent = c.back;
+  document.getElementById("fc-back-ex").textContent = c.ex;
+}
+
+document.getElementById("flashcard").addEventListener("click", (e) => {
+  if (e.target.closest("button")) return;
+  document.getElementById("flashcard").classList.toggle("flipped");
+});
+document.getElementById("fc-speak-norm").addEventListener("click", () => {
+  const c = fcList[fcIdx % fcList.length];
+  if (c) speakText(c.front, c.lang, 1.0);
+});
+document.getElementById("fc-speak-ex").addEventListener("click", () => {
+  const c = fcList[fcIdx % fcList.length];
+  if (c) speakText(c.deck === "en_verbs" ? c.back.replace(/—/g, ",") : c.ex, c.lang, 1.0);
+});
+document.getElementById("fc-again").addEventListener("click", () => {
+  fcIdx++;
+  renderFlashcard();
+});
+document.getElementById("fc-know").addEventListener("click", () => {
+  store.xp += 5;
+  store.streak += 1;
+  saveStore();
+  showToast("+5 XP! Карточка пройдена");
+  fcIdx++;
+  renderFlashcard();
+});
+
+/* ==================== TAB 2: ТРЕНАЖЁР ==================== */
+let pracPool = [], curPrac = null, pracAnswered = false;
+function initPractice() {
+  const sel = document.getElementById("prac-select");
+  const mods = [...new Set(QUESTIONS.map(q => q.mod))];
+  ["Все модули (EN A2–C1 + DE A1–B2)", "🇬🇧 Только English (A2–C1)", "🇩🇪 Только Deutsch (A1–B2)", "🔥 Работа над ошибками", ...mods].forEach(m => sel.add(new Option(m, m)));
+  sel.addEventListener("change", initPracticePool);
+  initPracticePool();
+}
+function initPracticePool() {
+  const mode = document.getElementById("prac-select").value;
+  if (mode.startsWith("Все")) pracPool = [...QUESTIONS];
+  else if (mode.startsWith("🇬🇧 Только")) pracPool = QUESTIONS.filter(q => q.lang === "en-GB");
+  else if (mode.startsWith("🇩🇪 Только")) pracPool = QUESTIONS.filter(q => q.lang === "de-DE");
+  else if (mode.startsWith("🔥")) pracPool = QUESTIONS.filter(q => store.mistakes.includes(q.id));
+  else pracPool = QUESTIONS.filter(q => q.mod === mode);
+  pracPool.sort(() => Math.random() - 0.5);
+  nextPracticeQ();
+}
+function nextPracticeQ() {
+  pracAnswered = false;
+  const fb = document.getElementById("prac-fb");
+  fb.classList.add("hidden");
+  document.getElementById("prac-next").classList.add("hidden");
+  const optsBox = document.getElementById("prac-opts");
+  optsBox.innerHTML = "";
+
+  if (pracPool.length === 0) {
+    if (document.getElementById("prac-select").value.startsWith("🔥")) {
+      curPrac = null;
+      document.getElementById("prac-tag").textContent = "Чисто!";
+      document.getElementById("prac-q").textContent = "🎉 Все ошибки исправлены! Выбери другой модуль.";
+      return;
+    }
+    initPracticePool();
+    return;
+  }
+  curPrac = pracPool.pop();
+  const tag = document.getElementById("prac-tag");
+  tag.textContent = `${curPrac.lvl} · ${curPrac.mod}`;
+  tag.className = "badge " + (curPrac.lang === "de-DE" ? "badge-de" : "badge-en");
+  document.getElementById("prac-q").textContent = curPrac.q;
+
+  [...curPrac.opts].sort(() => Math.random() - 0.5).forEach(o => {
+    const b = document.createElement("button");
+    b.className = "opt-btn";
+    b.textContent = o;
+    b.addEventListener("click", () => answerPrac(o, b));
+    optsBox.appendChild(b);
+  });
+}
+function answerPrac(chosen, btnEl) {
+  if (pracAnswered || !curPrac) return;
+  pracAnswered = true;
+  const fb = document.getElementById("prac-fb");
+  fb.classList.remove("hidden");
+  document.querySelectorAll("#prac-opts .opt-btn").forEach(b => {
+    b.disabled = true;
+    if (b.textContent === curPrac.a) b.classList.add("correct");
+  });
+  if (chosen === curPrac.a) {
+    store.xp += 10; store.streak += 1;
+    store.mistakes = store.mistakes.filter(id => id !== curPrac.id);
+    fb.className = "feedback-box fb-ok";
+    fb.textContent = `✅ Верно! (+10 XP)\n💡 ${curPrac.r}`;
+  } else {
+    btnEl.classList.add("wrong");
+    store.streak = 0;
+    if (!store.mistakes.includes(curPrac.id)) store.mistakes.push(curPrac.id);
+    fb.className = "feedback-box fb-err";
+    fb.textContent = `❌ Ошибка! Правильно: ${curPrac.a}\n💡 ${curPrac.r}`;
+  }
+  saveStore();
+  document.getElementById("prac-next").classList.remove("hidden");
+}
+document.getElementById("prac-next").addEventListener("click", nextPracticeQ);
+document.getElementById("prac-speak").addEventListener("click", () => {
+  if (!curPrac) return;
+  const spoken = curPrac.q.replace("___", pracAnswered ? curPrac.a : "blank");
+  speakText(spoken, curPrac.lang);
+});
+
+/* ==================== TAB 3: ПИСЬМЕННО ==================== */
+let writePool = [], curWrite = null, writeChecked = false, curWriteLetter = "B";
+function initWrite() {
+  const sel = document.getElementById("write-select");
+  [
+    "🔤 EN Глаголы: По буквам A–Z",
+    "🇬🇧 115 Глаголов: Все подряд",
+    "1. Три формы одинаковые",
+    "2. Чередование i – a – u",
+    "3. Формы на -ought / -aught",
+    "4. Вторая и третья совпадают",
+    "5. Третья форма на -en / -n",
+    "🔥 Мои ошибки в глаголах",
+    "📝 EN Диктант: Word Formation & IELTS Spelling",
+    "🇩🇪 DE Сильные глаголы (A1–B2)",
+    "🇩🇪 DE Артикли (der/die/das) & Правописание"
+  ].forEach(m => sel.add(new Option(m, m)));
+  sel.addEventListener("change", initWritePool);
+  initWritePool();
+}
+function renderWriteLetters() {
+  const box = document.getElementById("write-letters");
+  box.innerHTML = "";
+  EN_LETTERS.forEach(l => {
+    const b = document.createElement("button");
+    b.className = "alpha-chip" + (curWriteLetter === l ? " active" : "");
+    b.textContent = l;
+    b.addEventListener("click", () => { curWriteLetter = l; initWritePool(); });
+    box.appendChild(b);
+  });
+}
+function initWritePool() {
+  const mode = document.getElementById("write-select").value;
+  const lBox = document.getElementById("write-letters");
+  lBox.classList.add("hidden");
+
+  if (mode.startsWith("📝")) writePool = [...EN_SPELLING];
+  else if (mode.startsWith("🇩🇪 DE Артикли")) writePool = [...DE_ARTICLES];
+  else if (mode.startsWith("🇩🇪 DE Сильные")) writePool = [...DE_VERBS];
+  else if (mode.startsWith("🔤")) {
+    lBox.classList.remove("hidden");
+    renderWriteLetters();
+    writePool = EN_VERBS.filter(v => v.letter === curWriteLetter);
+  } else if (mode.startsWith("🇬🇧 115")) writePool = [...EN_VERBS];
+  else if (mode.startsWith("🔥")) writePool = EN_VERBS.filter(v => store.verbMistakes.includes(v.v1));
+  else writePool = EN_VERBS.filter(v => v.group === mode);
+
+  writePool.sort(() => Math.random() - 0.5);
+  nextWriteItem();
+}
+function nextWriteItem() {
+  writeChecked = false;
+  document.getElementById("write-fb").classList.add("hidden");
+  document.getElementById("write-next-btn").classList.add("hidden");
+  document.getElementById("write-check-btn").classList.remove("hidden");
+  document.getElementById("inp-f2").value = "";
+  document.getElementById("inp-f3").value = "";
+  document.getElementById("inp-word").value = "";
+
+  const mode = document.getElementById("write-select").value;
+  if (writePool.length === 0) {
+    if (mode.startsWith("🔥")) {
+      curWrite = null;
+      document.getElementById("write-badge").textContent = "Чисто!";
+      document.getElementById("write-prompt").textContent = "🎉 Ошибочных глаголов нет!";
+      document.getElementById("write-check-btn").classList.add("hidden");
+      return;
+    }
+    initWritePool();
+    return;
+  }
+  curWrite = writePool.pop();
+  const isSingle = mode.startsWith("📝") || mode.startsWith("🇩🇪 DE Артикли");
+  const isDe = mode.startsWith("🇩🇪");
+  const badge = document.getElementById("write-badge");
+  badge.className = "badge " + (isDe ? "badge-de" : "badge-en");
+
+  if (isSingle) {
+    document.getElementById("write-inputs-pair").classList.add("hidden");
+    document.getElementById("write-inputs-single").classList.remove("hidden");
+    badge.textContent = curWrite.type;
+    document.getElementById("write-prompt").textContent = curWrite.p;
+  } else {
+    document.getElementById("write-inputs-pair").classList.remove("hidden");
+    document.getElementById("write-inputs-single").classList.add("hidden");
+    document.getElementById("inp-f2").placeholder = isDe ? "Präteritum (напр. ging)" : "2-я форма (V2 — Past Simple)";
+    document.getElementById("inp-f3").placeholder = isDe ? "Partizip II (напр. ist gegangen)" : "3-я форма (V3 — Past Participle)";
+    badge.textContent = isDe ? `${curWrite.group} · Сильный глагол` : `Буква «${curWrite.letter}» · ${curWrite.group}`;
+    document.getElementById("write-prompt").textContent = `Глагол: ${curWrite.v1.toUpperCase()} — «${curWrite.ru}»`;
+  }
+}
+function checkWrite() {
+  if (writeChecked || !curWrite) return;
+  writeChecked = true;
+  const mode = document.getElementById("write-select").value;
+  const fb = document.getElementById("write-fb");
+  fb.classList.remove("hidden");
+
+  if (mode.startsWith("📝") || mode.startsWith("🇩🇪 DE Артикли")) {
+    const u = document.getElementById("inp-word").value.trim().toLowerCase();
+    if (u === curWrite.a.toLowerCase()) {
+      store.xp += 15; store.streak += 1;
+      fb.className = "feedback-box fb-ok";
+      fb.textContent = `✅ Верно! (+15 XP)\n💡 ${curWrite.h}`;
+    } else {
+      store.streak = 0;
+      fb.className = "feedback-box fb-err";
+      fb.textContent = `❌ Ошибка! Правильно: ${curWrite.a}\n💡 ${curWrite.h}`;
+    }
+  } else {
+    const u2 = document.getElementById("inp-f2").value.trim().toLowerCase();
+    const u3 = document.getElementById("inp-f3").value.trim().toLowerCase();
+    const isDe = mode.startsWith("🇩🇪");
+    const valid2 = curWrite.v2 === "was/were" ? ["was/were","was","were","was were"] : [curWrite.v2.toLowerCase()];
+    const v3Target = curWrite.v3.toLowerCase();
+    const v3Bare = v3Target.replace(/^(hat|ist)\s+/, "");
+    const ok3 = isDe ? (u3 === v3Target || u3 === v3Bare) : (u3 === v3Target);
+
+    if (valid2.includes(u2) && ok3) {
+      store.xp += 15; store.streak += 1;
+      if (isDe) {
+        if (!store.deVerbsMastered.includes(curWrite.v1)) store.deVerbsMastered.push(curWrite.v1);
+      } else {
+        if (!store.verbsMastered.includes(curWrite.v1)) store.verbsMastered.push(curWrite.v1);
+        store.verbMistakes = store.verbMistakes.filter(x => x !== curWrite.v1);
+      }
+      fb.className = "feedback-box fb-ok";
+      fb.textContent = `✅ Идеально! (+15 XP): ${curWrite.v1} — ${curWrite.v2} — ${curWrite.v3}`;
+    } else {
+      store.streak = 0;
+      if (!isDe && !store.verbMistakes.includes(curWrite.v1)) store.verbMistakes.push(curWrite.v1);
+      fb.className = "feedback-box fb-err";
+      fb.textContent = `❌ Ошибка! Правильно: ${curWrite.v1} — ${curWrite.v2} — ${curWrite.v3}`;
+    }
+  }
+  saveStore();
+  document.getElementById("write-check-btn").classList.add("hidden");
+  document.getElementById("write-next-btn").classList.remove("hidden");
+}
+document.getElementById("write-check-btn").addEventListener("click", checkWrite);
+document.getElementById("write-next-btn").addEventListener("click", nextWriteItem);
+document.getElementById("write-speak").addEventListener("click", () => {
+  if (!curWrite) return;
+  const txt = curWrite.speak || curWrite.v1 || curWrite.a;
+  speakText(txt, curWrite.lang || "en-GB");
+});
+["inp-f2","inp-f3","inp-word"].forEach(id => {
+  document.getElementById(id).addEventListener("keydown", e => {
+    if (e.key === "Enter") {
+      if (!writeChecked) checkWrite();
+      else nextWriteItem();
+    }
+  });
+});
+
+/* ==================== TAB 4: ИНСТРУМЕНТЫ ==================== */
+function switchSubTab(sub) {
+  ["phonetics","calc","exam","profile"].forEach(s => {
+    document.getElementById("sub-" + s).classList.toggle("hidden", s !== sub);
+  });
+  document.querySelectorAll("#tools-subtabs .sub-tab").forEach(b => {
+    b.classList.toggle("active", b.dataset.sub === sub);
+  });
+  if (sub === "profile") renderProfile();
+}
+document.querySelectorAll("#tools-subtabs .sub-tab").forEach(b => {
+  b.addEventListener("click", () => switchSubTab(b.dataset.sub));
+});
+
+/* --- Sub 1: Phonetics --- */
+let curAccentLang = "uk";
+function renderAccentRules() {
+  const list = document.getElementById("accent-rules-list");
+  list.innerHTML = "";
+  const langCode = curAccentLang === "uk" ? "en-GB" : "de-DE";
+  ACCENT_GUIDES[curAccentLang].forEach(g => {
+    const card = document.createElement("div");
+    card.className = "topic-card";
+    card.innerHTML = `
+      <div class="topic-title" style="margin-bottom:6px;">${g.title}</div>
+      <div style="font-size:13px; color:var(--text-muted); line-height:1.5; margin-bottom:10px;">${g.rule}</div>
+      ${g.words.map((item, idx) => `
+        <div class="example-row">
+          <div>
+            <div class="example-en">${item.w}</div>
+            <div class="example-ipa">${item.ipa}</div>
+            <div class="example-ru">${item.ru}</div>
+          </div>
+          <button class="speak-btn" data-w="${idx}">🔊 ${curAccentLang.toUpperCase()}</button>
+        </div>
+      `).join("")}
+    `;
+    card.querySelectorAll("[data-w]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const w = g.words[Number(btn.dataset.w)].w.replace(/·/g, ",");
+        speakText(w, langCode);
+      });
+    });
+    list.appendChild(card);
+  });
+}
+document.querySelectorAll("#accent-lang-chips .pill-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    curAccentLang = btn.dataset.acclang;
+    document.querySelectorAll("#accent-lang-chips .pill-btn").forEach(x => x.classList.remove("active"));
+    btn.classList.add("active");
+    renderAccentRules();
+  });
+});
+document.getElementById("tts-test-uk").addEventListener("click", () => {
+  const t = document.getElementById("tts-custom-input").value.trim() || "Water, schedule, neither";
+  speakText(t, "en-GB");
+});
+document.getElementById("tts-test-de").addEventListener("click", () => {
+  const t = document.getElementById("tts-custom-input").value.trim() || "Ich möchte Deutsch sprechen";
+  speakText(t, "de-DE");
+});
+
+/* --- Sub 2: Calculators --- */
+function updateIeltsCalc() {
+  const l = parseFloat(document.getElementById("sl-l").value);
+  const r = parseFloat(document.getElementById("sl-r").value);
+  const w = parseFloat(document.getElementById("sl-w").value);
+  const s = parseFloat(document.getElementById("sl-s").value);
+  document.getElementById("val-l").textContent = l.toFixed(1);
+  document.getElementById("val-r").textContent = r.toFixed(1);
+  document.getElementById("val-w").textContent = w.toFixed(1);
+  document.getElementById("val-s").textContent = s.toFixed(1);
+
+  const raw = (l + r + w + s) / 4;
+  const band = Math.round(raw * 2) / 2;
+  document.getElementById("ielts-overall").textContent = band.toFixed(1);
+
+  let cefr = "A2", ege = "~50–60", de = "Goethe A2";
+  if (band >= 8.5) { cefr = "C2"; ege = "98–100"; de = "Goethe C2"; }
+  else if (band >= 7.0) { cefr = "C1"; ege = "90–98"; de = "Goethe C1"; }
+  else if (band >= 5.5) { cefr = "B2"; ege = "76–89"; de = "Goethe B2"; }
+  else if (band >= 4.0) { cefr = "B1"; ege = "60–75"; de = "Goethe B1"; }
+  document.getElementById("ielts-cefr").textContent = cefr;
+  document.getElementById("ielts-ege").textContent = ege;
+  document.getElementById("ielts-de").textContent = de;
+}
+["sl-l","sl-r","sl-w","sl-s"].forEach(id => {
+  document.getElementById(id).addEventListener("input", updateIeltsCalc);
+});
+
+function updateRoadmapCalc() {
+  const cur = Number(document.getElementById("calc-cur").value);
+  const tgt = Number(document.getElementById("calc-tgt").value);
+  const mins = Number(document.getElementById("sl-mins").value);
+  document.getElementById("val-mins").textContent = mins + " мин/день";
+
+  const box = document.getElementById("roadmap-result");
+  if (tgt <= cur) {
+    box.innerHTML = `<div style="font-weight:700; font-size:14px;">Выбери целевой уровень выше текущего!</div>`;
+    return;
+  }
+  // Guided learning hours per step: A1->A2 (150h), A2->B1 (200h), B1->B2 (200h), B2->C1 (250h)
+  const stepHours = [150, 200, 200, 250];
+  let totalHours = 0;
+  for (let i = cur; i < tgt; i++) totalHours += stepHours[i];
+  const days = Math.ceil((totalHours * 60) / mins);
+  const weeks = (days / 7).toFixed(1);
+  const months = (days / 30.4).toFixed(1);
+  const targetDate = new Date(Date.now() + days * 86400000).toLocaleDateString("ru-RU", { day:"numeric", month:"long", year:"numeric" });
+
+  box.innerHTML = `
+    <div style="font-size:12px; font-weight:700; color:var(--text-muted); text-transform:uppercase;">Расчётный путь до цели</div>
+    <div class="result-big" style="font-size:26px; margin-top:4px;">~${months} мес. (${days} дн.)</div>
+    <div style="font-size:12.5px; color:var(--text-muted); margin-top:4px;">Ориентир: <b>${targetDate}</b></div>
+    <div class="result-grid">
+      <div class="metric-box"><div class="metric-val">${totalHours} ч</div><div class="metric-lbl">Всего часов</div></div>
+      <div class="metric-box"><div class="metric-val">${weeks} нед</div><div class="metric-lbl">Недель</div></div>
+      <div class="metric-box"><div class="metric-val">${Math.round(mins * 2.5)} XP</div><div class="metric-lbl">Цель XP/день</div></div>
+    </div>
+  `;
+}
+["calc-cur","calc-tgt","sl-mins"].forEach(id => {
+  document.getElementById(id).addEventListener("input", updateRoadmapCalc);
+  document.getElementById(id).addEventListener("change", updateRoadmapCalc);
+});
+
+/* --- Sub 3: Exam --- */
+let examQs = [], examIdx = 0, examCorr = 0, examLog = [];
+function initExam() {
+  const sel = document.getElementById("exam-select");
+  const mods = [...new Set(QUESTIONS.map(q => q.mod))];
+  ["🏆 Полный зачёт IELTS B2–C1 (10 вопросов)", "🇩🇪 Полный зачёт Deutsch A1–B2 (10 вопросов)", "🌍 Мега-зачёт EN + DE (12 вопросов)", ...mods].forEach(m => sel.add(new Option(m, m)));
+  sel.addEventListener("change", startExam);
+  document.getElementById("exam-restart").addEventListener("click", startExam);
+  startExam();
+}
+function startExam() {
+  const target = document.getElementById("exam-select").value;
+  let pool;
+  if (target.startsWith("🏆")) pool = QUESTIONS.filter(q => q.lang === "en-GB");
+  else if (target.startsWith("🇩🇪 Полный")) pool = QUESTIONS.filter(q => q.lang === "de-DE");
+  else if (target.startsWith("🌍")) pool = [...QUESTIONS];
+  else pool = QUESTIONS.filter(q => q.mod === target);
+
+  pool = [...pool].sort(() => Math.random() - 0.5);
+  const limit = target.startsWith("🌍") ? 12 : (target.startsWith("🏆") || target.startsWith("🇩🇪 Полный") ? 10 : pool.length);
+  examQs = pool.slice(0, limit);
+  examIdx = 0; examCorr = 0; examLog = [];
+  document.getElementById("exam-res").classList.add("hidden");
+  renderExamQ();
+}
+function renderExamQ() {
+  const optsBox = document.getElementById("exam-opts");
+  optsBox.innerHTML = "";
+  if (examIdx >= examQs.length) {
+    const pct = examQs.length ? Math.round((examCorr / examQs.length) * 100) : 0;
+    store.xp += examCorr * 15;
+    const mod = document.getElementById("exam-select").value;
+    if (pct > (store.scores[mod] || 0)) store.scores[mod] = pct;
+    saveStore();
+    document.getElementById("exam-prog").textContent = "🏁 Зачёт завершён!";
+    document.getElementById("exam-q").textContent = `Результат: ${examCorr} из ${examQs.length} (${pct}%)`;
+    const grade = pct >= 90 ? "5 (IELTS 7.5–8.0 / C1)" : pct >= 75 ? "4 (IELTS 6.0–6.5 / B2)" : pct >= 55 ? "3 (IELTS 4.5–5.0 / B1)" : "2 (Нужен повтор)";
+    const res = document.getElementById("exam-res");
+    res.classList.remove("hidden");
+    res.textContent = `Оценка: ${grade}\nНачислено: +${examCorr * 15} XP\n\n` + (examLog.length ? "Разбор ошибок:\n" + examLog.join("\n") : "🎉 Без единой ошибки!");
+    return;
+  }
+  const q = examQs[examIdx];
+  document.getElementById("exam-prog").textContent = `Вопрос ${examIdx + 1} из ${examQs.length} · ${q.lvl}`;
+  document.getElementById("exam-q").textContent = q.q;
+  [...q.opts].sort(() => Math.random() - 0.5).forEach(o => {
+    const b = document.createElement("button");
+    b.className = "opt-btn";
+    b.textContent = o;
+    b.addEventListener("click", () => {
+      if (o === q.a) examCorr++;
+      else {
+        if (!store.mistakes.includes(q.id)) store.mistakes.push(q.id);
+        examLog.push(`• ${q.q} (Верно: ${q.a})`);
+      }
+      examIdx++;
+      renderExamQ();
+    });
+    optsBox.appendChild(b);
+  });
+}
+
+/* --- Sub 4: Profile & JSON Import/Export --- */
+function renderProfile() {
+  const rank = store.xp < 150 ? "A2 Elementary" : store.xp < 400 ? "B1 Intermediate (Spotlight)" : store.xp < 800 ? "B2 Upper-Intermediate (IELTS 6.5)" : "C1 Advanced (IELTS 7.5+)";
+  const scoreKeys = Object.keys(store.scores);
+  const scoresHtml = scoreKeys.length
+    ? scoreKeys.map(k => `<div style="display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px solid var(--border); font-size:13px;"><span>${k}</span><b>${store.scores[k]}%</b></div>`).join("")
+    : `<div style="color:var(--text-muted); font-size:13px;">Пока нет сданных зачётов — перейди во вкладку «🎓 Зачёт».</div>`;
+
+  document.getElementById("profile-box").innerHTML = `
+    <div class="panel-card">
+      <div style="font-size:17px; font-weight:800; margin-bottom:4px;">👤 Профиль подготовки</div>
+      <div style="color:var(--accent); font-weight:700; margin-bottom:12px;">Ранг: ${rank}</div>
+      <div class="result-grid">
+        <div class="metric-box"><div class="metric-val">${store.xp}</div><div class="metric-lbl">Опыт XP</div></div>
+        <div class="metric-box"><div class="metric-val">${store.verbsMastered.length}/115</div><div class="metric-lbl">EN Глаголы</div></div>
+        <div class="metric-box"><div class="metric-val">${store.learnedTopics.length}/${CHEAT_TOPICS.length}</div><div class="metric-lbl">Шпаргалки</div></div>
+      </div>
+    </div>
+    <div class="panel-card">
+      <div style="font-weight:800; font-size:14.5px; margin-bottom:8px;">🎓 Табель зачётов</div>
+      ${scoresHtml}
+    </div>
+  `;
+}
+
+function openModal(html) {
+  document.getElementById("modal-content").innerHTML = html;
+  document.getElementById("modal-backdrop").classList.add("open");
+}
+function closeModal() {
+  document.getElementById("modal-backdrop").classList.remove("open");
+}
+document.getElementById("modal-backdrop").addEventListener("click", e => {
+  if (e.target.id === "modal-backdrop") closeModal();
+});
+
+document.getElementById("btn-export-json").addEventListener("click", () => {
+  const payload = JSON.stringify({
+    xp: store.xp,
+    streak: store.streak,
+    mistakes: store.mistakes,
+    verb_mistakes: store.verbMistakes,
+    verbs_mastered: store.verbsMastered,
+    de_verbs_mastered: store.deVerbsMastered,
+    learned_topics: store.learnedTopics,
+    fav_topics: store.favTopics,
+    exam_scores: store.scores
+  }, null, 2);
+  const blob = new Blob([payload], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "lingua_uk_de_save.json";
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast("Файл сохранения скачан!");
+});
+
+document.getElementById("btn-import-open").addEventListener("click", () => {
+  openModal(`
+    <div style="font-weight:800; font-size:15.5px; margin-bottom:8px;">⬆️ Импорт JSON (english_c1_save.json)</div>
+    <div style="font-size:12.5px; color:var(--text-muted); margin-bottom:10px;">Вставь содержимое JSON-файла ниже:</div>
+    <textarea id="import-ta" class="input-field" rows="6" placeholder='{"xp": 40, "verbs_mastered": ["say", "swear"]}'></textarea>
+    <div class="btn-grid-2" style="margin-top:12px;">
+      <button class="btn-secondary" id="m-cancel">Отмена</button>
+      <button class="btn-primary" id="m-apply">Загрузить</button>
+    </div>
+  `);
+  document.getElementById("m-cancel").addEventListener("click", closeModal);
+  document.getElementById("m-apply").addEventListener("click", () => {
+    try {
+      const d = JSON.parse(document.getElementById("import-ta").value.trim());
+      if (typeof d.xp === "number") store.xp = d.xp;
+      if (typeof d.streak === "number") store.streak = d.streak;
+      if (Array.isArray(d.mistakes)) store.mistakes = d.mistakes;
+      if (Array.isArray(d.verb_mistakes)) store.verbMistakes = d.verb_mistakes;
+      if (Array.isArray(d.verbs_mastered)) store.verbsMastered = d.verbs_mastered;
+      if (Array.isArray(d.de_verbs_mastered)) store.deVerbsMastered = d.de_verbs_mastered;
+      if (Array.isArray(d.learned_topics)) store.learnedTopics = d.learned_topics;
+      if (Array.isArray(d.fav_topics)) store.favTopics = d.fav_topics;
+      if (d.exam_scores && typeof d.exam_scores === "object") store.scores = d.exam_scores;
+      saveStore();
+      renderCheatSheet();
+      renderProfile();
+      closeModal();
+      showToast("Прогресс успешно загружен!");
+    } catch (err) {
+      showToast("Ошибка: проверь формат JSON");
+    }
+  });
+});
+
+document.getElementById("btn-reset-open").addEventListener("click", () => {
+  openModal(`
+    <div style="font-weight:800; font-size:15.5px; margin-bottom:8px;">🗑️ Сбросить весь прогресс?</div>
+    <div style="font-size:13px; color:var(--text-muted); margin-bottom:14px;">XP, серия, выученные глаголы и шпаргалки будут обнулены.</div>
+    <div class="btn-grid-2">
+      <button class="btn-secondary" id="r-cancel">Отмена</button>
+      <button class="btn-primary" id="r-confirm" style="background:var(--danger);">Сбросить</button>
+    </div>
+  `);
+  document.getElementById("r-cancel").addEventListener("click", closeModal);
+  document.getElementById("r-confirm").addEventListener("click", () => {
+    const theme = store.theme;
+    store = { ...DEFAULT_STORE, theme };
+    saveStore();
+    renderCheatSheet();
+    renderProfile();
+    closeModal();
+    showToast("Прогресс сброшен");
+  });
+});
+
+/* ==================== INIT ==================== */
+applyTheme();
+saveStore();
+renderCheatSheet();
+initFlashcards();
+initPractice();
+initWrite();
+renderAccentRules();
+updateIeltsCalc();
+updateRoadmapCalc();
+initExam();
+
+if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js").catch(() => {});
+  });
+}
+</script>
+</body>
+</html>
